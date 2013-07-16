@@ -20,7 +20,7 @@ There is a number of ways to install Python software.
 - Using easy_install
 - Using a source tarball
 - Using source directly from gitorius
-- From a distribution specific repository (Arch Linux AUR)
+- From a distribution specific repository
 
 pip or easy_install
 -------------------
@@ -44,12 +44,6 @@ Download the source tarball, uncompress it, then run the install command::
     $ tar -xzvf goobook-*.tar.gz
     $ cd goobook-*
     $ sudo python ./setup.py install
-
-Upgrading from < 1.0
---------------------
-
-If you are upgrading from a pre 1.0 version you will have to remove the old
-cachefile and create a new configuration.
 
 Configure
 =========
