@@ -36,7 +36,7 @@ class UltraMagicString(object):
         return self.value.split(*args, **kw)
 
 setup(name='goobook',
-      version = '1.4',
+      version = '1.5',
       description = 'Search your google contacts from the command-line or mutt.',
       long_description=UltraMagicString(README + '\n\n' + NEWS),
       maintainer = UltraMagicString('Christer Sjöholm'),
