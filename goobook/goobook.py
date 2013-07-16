@@ -37,11 +37,11 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 
-from hcs_utils.storage import Storage
+from hcs_utils.storage import Storage, storageify, unstorageify
 
 log = logging.getLogger(__name__)
 
-CACHE_FORMAT_VERSION = '3.2'
+CACHE_FORMAT_VERSION = '4.0'
 G_MAX_SRESULTS = 9999 # Maximum number of entries to ask google for.
 GDATA_VERSION = '3'
 ATOM_NS = '{http://www.w3.org/2005/Atom}'
@@ -243,8 +243,8 @@ class Cache(object):
                 log.info('Failed to read the cache file: %s', err)
                 raise
         if cache:
-            self.contacts = cache.get('contacts')
-            self.groups = cache.get('groups')
+            self.contacts = storageify(cache.get('contacts'))
+            self.groups = storageify(cache.get('groups'))
         else:
             self.update()
         if not self.contacts:
@@ -262,7 +262,7 @@ class Cache(object):
 
         """
         if self.contacts: # never write a empty addressbook
-            cache = {'contacts': self.contacts, 'groups': self.groups, 'goobook_cache': CACHE_FORMAT_VERSION}
+            cache = {'contacts': unstorageify(self.contacts), 'groups': unstorageify(self.groups), 'goobook_cache': CACHE_FORMAT_VERSION}
             pickle.dump(cache, open(self.__config.cache_filename, 'wb'))
 
     def get_group(self, id_):
