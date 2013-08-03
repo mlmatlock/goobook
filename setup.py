@@ -4,8 +4,6 @@
 
 import os
 
-from distribute_setup import use_setuptools
-use_setuptools()
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -38,7 +36,7 @@ class UltraMagicString(object):
         return self.value.split(*args, **kw)
 
 setup(name='goobook',
-      version = '1.4',
+      version = '1.5',
       description = 'Search your google contacts from the command-line or mutt.',
       long_description=UltraMagicString(README + '\n\n' + NEWS),
       maintainer = UltraMagicString('Christer Sjöholm'),
@@ -50,7 +48,6 @@ setup(name='goobook',
         Environment :: Console
         Operating System :: OS Independent
         Programming Language :: Python
-        Programming Language :: Python :: 2.6
         Programming Language :: Python :: 2.7
         Intended Audience :: End Users/Desktop
         License :: OSI Approved :: GNU General Public License (GPL)
@@ -58,10 +55,9 @@ setup(name='goobook',
         """.splitlines() if f.strip()],
       license = 'GPLv3',
       install_requires = [
-          'argparse>=1.1',
           'distribute',
           'gdata>=2.0.7',
-          'hcs_utils==1.1.1',
+          'hcs_utils>=1.3',
           'simplejson>=2.1.0',
           'keyring>=0.2'],
       packages = find_packages(),
