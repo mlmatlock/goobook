@@ -175,6 +175,11 @@ class GooBook(object):
         ET.SubElement(entry, GC_NS + 'groupMembershipInfo', deleted='false',
                 href=group_id)
 
+        if self.__config.default_group:
+            group_id2 = self.cache.get_group_by_title(self.__config.default_group).id
+            ET.SubElement(entry, GC_NS + 'groupMembershipInfo', deleted='false',
+                    href=group_id2)
+
         gcont = GoogleContacts(self.__config)
         log.debug('Going to create contact name: %s email: %s' % (name, mailaddr))
         gcont.create_contact(entry)
