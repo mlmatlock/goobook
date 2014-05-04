@@ -1,0 +1,97 @@
+.\"Created with GNOME Manpages Editor Wizard
+.\"http://sourceforge.net/projects/gmanedit2
+.TH goobook 1 "April 12, 2014" "" "goobook"
+.SH NAME
+goobook \- access your Google contacts from mutt or the command line
+
+.SH SYNOPSIS
+.B goobook 
+.RI [ options ]
+.RI COMMAND
+.br
+
+.SH DESCRIPTION
+.B goobook
+can be used to access your Google contacts from the command line. It can also be easily integrated into MUAs such as mutt. It can be used from mutt the same way as abook. 
+
+.SH OPTIONS
+.TP 
+\-h, \-\-help
+show the help message and exit
+.TP 
+\-c FILE, \-\-config FILE
+specify alternative configuration file
+.TP
+\-v, \-\-verbose
+be verbose about what is going on (stderr)
+.TP
+\-V, \-\-version
+print version and exit
+.TP
+\-d, \-\-debug
+output debug information to stderr
+
+.SH COMMAND
+.TP
+add         
+read an email address from stdin and add the From: address to your Google contacts
+.TP
+config-template
+create a config template of 
+.B ~/.goobookrc
+.TP
+dump_contacts
+dump all your contacts to XML (stdout)
+.TP
+dump_groups
+dump your contact groups to XML (stdout)
+.TP
+dquery QUERY_STRING
+search contacts for QUERY_STRING, nice vcard like output
+.TP
+query QUERY_STRING
+search contacts for QUERY_STRING, plain text output
+.TP
+reload 
+reload contacts from Google and update cache
+
+.SH CONFIGURATION 
+.PP
+Basic configuration can be done in
+.B ~/.netrc
+.PP
+ machine google.com
+   login your_login@gmail.com
+   password your_password
+.PP
+To have access to more advanced options, you can generate .goobookrc config file by doing:
+.PP
+goobook config-template > ~/.goobookrc
+.PP
+An example config can look like this:
+.PP
+ [DEFAULT]
+  email: your_login@gmail.com
+  password: your_password
+  cache_filename: ~/.goobook_cache
+  cache_expiry_hours: 24
+.PP
+If you do not give email and password, they will be read from .netrc. You can set password to
+.B prompt, 
+in this case goobook will ask for your password on every request. Instead of giving password in plain text, you can 
+use 
+.B passwordeval
+option to set a command for extracting password from a secure location. You can use gpg for this:
+.PP
+gpg \-\-batch \-d ~/encrypted\_password\_file.gpg
+   
+
+.SH "SEE ALSO
+Website: https://pypi.python.org/pypi/goobook/
+
+.SH AUTHOR
+
+This manual page has been written by Dariusz Dwornikowski <dariusz.dwornikowski@cs.put.poznan.pl>
+
+
+

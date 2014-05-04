@@ -5,6 +5,7 @@ Contributors
 * Alex Bennee
 * Carlos José Barroso
 * Christer Sjöholm
+* Dariusz Dwornikowski
 * Marcus Nitzschke
 * Samir Benmendil
 * T.V. Raman
