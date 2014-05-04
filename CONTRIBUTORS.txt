@@ -6,6 +6,7 @@ Contributors
 * Carlos José Barroso
 * Christer Sjöholm
 * Marcus Nitzschke
+* Samir Benmendil
 * T.V. Raman
 * Tycho Andersen
 * i.emre.sahin
