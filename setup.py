@@ -59,8 +59,10 @@ setup(name='goobook',
           'setuptools=>0.7',
           'gdata>=2.0.7',
           'hcs_utils>=1.3',
-          'simplejson>=2.1.0',
-          'keyring>=0.2'],
+          'simplejson>=2.1.0'],
+      extras_require={
+          'keychain': ['keyring>=0.2']
+      },
       packages=find_packages(),
       entry_points={'console_scripts': ['goobook = goobook.application:main']}
       )

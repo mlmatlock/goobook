@@ -3,6 +3,7 @@ CHANGES
 
 1.6   2014-05-
 ----------------
+* Issue 41 Changed keyring dependency into an extra.
 * Issue 43 depend on setuptools>=0.7 instead of distribute (they have merged)
 
 1.5   2013-08-03
