@@ -10,6 +10,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.txt')).read()
 NEWS = open(os.path.join(here, 'CHANGES.txt')).read()
 
+
 class UltraMagicString(object):
     ''' Stolen from http://stackoverflow.com/questions/1162338/whats-the-right-way-to-use-unicode-metadata-in-setup-py
 
@@ -36,14 +37,14 @@ class UltraMagicString(object):
         return self.value.split(*args, **kw)
 
 setup(name='goobook',
-      version = '1.5',
-      description = 'Search your google contacts from the command-line or mutt.',
+      version='1.6',
+      description='Search your google contacts from the command-line or mutt.',
       long_description=UltraMagicString(README + '\n\n' + NEWS),
-      maintainer = UltraMagicString('Christer Sjöholm'),
-      maintainer_email = 'goobook@furuvik.net',
-      url = 'http://goobook.googlecode.com/',
-      download_url = 'http://pypi.python.org/pypi/goobook',
-      classifiers = [f.strip() for f in """
+      maintainer=UltraMagicString('Christer Sjöholm'),
+      maintainer_email='goobook@furuvik.net',
+      url='http://goobook.googlecode.com/',
+      download_url='http://pypi.python.org/pypi/goobook',
+      classifiers=[f.strip() for f in """
         Development Status :: 5 - Production/Stable
         Environment :: Console
         Operating System :: OS Independent
@@ -53,14 +54,13 @@ setup(name='goobook',
         License :: OSI Approved :: GNU General Public License (GPL)
         Topic :: Communications :: Email :: Address Book
         """.splitlines() if f.strip()],
-      license = 'GPLv3',
-      install_requires = [
-          'distribute',
+      license='GPLv3',
+      install_requires=[
+          'setuptools=>0.7',
           'gdata>=2.0.7',
           'hcs_utils>=1.3',
           'simplejson>=2.1.0',
           'keyring>=0.2'],
-      packages = find_packages(),
-      entry_points = {'console_scripts': [ 'goobook = goobook.application:main']}
-     )
-
+      packages=find_packages(),
+      entry_points={'console_scripts': ['goobook = goobook.application:main']}
+      )

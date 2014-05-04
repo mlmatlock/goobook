@@ -1,6 +1,10 @@
 CHANGES
 =======
 
+1.6   2014-05-
+----------------
+* Issue 43 depend on setuptools>=0.7 instead of distribute (they have merged)
+
 1.5   2013-08-03
 ----------------
 * Issue 39 Support for hcs-utils>=1.3
