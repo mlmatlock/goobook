@@ -36,6 +36,8 @@ TEMPLATE = '''\
 ;cache_filename: ~/.goobook_cache
 ;cache_expiry_hours: 24
 ;filter_groupless_contacts: yes
+# New contacts will be added to this group in addition to "My Contacts"
+;default_group: 
 '''
 
 def read_config(config_file):
@@ -50,6 +52,7 @@ def read_config(config_file):
         'cache_filename': '~/.goobook_cache',
         'cache_expiry_hours': '24',
         'filter_groupless_contacts': True,
+        'default_group': '',
         })
     config_file = os.path.expanduser(config_file)
     parser = _get_config(config_file)
