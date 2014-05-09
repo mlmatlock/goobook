@@ -12,7 +12,7 @@ import netrc
 import os
 import subprocess
 
-from hcs_utils.storage import Storage
+from .storage import Storage
 from os.path import realpath, expanduser
 
 log = logging.getLogger(__name__)

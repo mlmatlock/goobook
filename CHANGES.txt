@@ -7,6 +7,7 @@ CHANGES
 * Issue 43 depend on setuptools>=0.7 instead of distribute (they have merged)
 * add support for default group by Samir Benmendil
 * Issue 42 Include a manual page
+* Removed dependency on hcs_utils, included the used module instead. On request, to simplify for packagers.
 
 1.5   2013-08-03
 ----------------

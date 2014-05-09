@@ -37,7 +37,7 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 
-from hcs_utils.storage import Storage, storageify, unstorageify
+from .storage import Storage, storageify, unstorageify
 
 log = logging.getLogger(__name__)
 

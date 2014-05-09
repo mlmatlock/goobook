@@ -58,7 +58,6 @@ setup(name='goobook',
       install_requires=[
           'setuptools>=0.7',
           'gdata>=2.0.7',
-          'hcs_utils>=1.3',
           'simplejson>=2.1.0'],
       extras_require={
           'keychain': ['keyring>=0.2']
