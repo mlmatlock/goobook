@@ -40,7 +40,6 @@ TEMPLATE = '''\
 # Note that the group has to already exist on google or an error will occur.
 # One use for this is to add new contacts to an "Unsorted" group, which can
 # be sorted easier than all of "My Contacts".
-    searching for groupless users is a bit painful.
 ;default_group:
 '''
 
