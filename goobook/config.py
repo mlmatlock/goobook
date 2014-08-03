@@ -43,25 +43,27 @@ TEMPLATE = '''\
 ;default_group:
 '''
 
+
 def read_config(config_file):
     '''Reads the ~/.goobookrc and ~/.netrc.
     returns the configuration as a dictionary.
 
     '''
-    config = Storage({ # Default values
-        'email': '',
-        'password': '',
-        'passwordeval': '',
-        'cache_filename': '~/.goobook_cache',
-        'cache_expiry_hours': '24',
-        'filter_groupless_contacts': True,
-        'default_group': '',
-        })
+    config = Storage(
+        {  # Default values
+         'email': '',
+         'password': '',
+         'passwordeval': '',
+         'cache_filename': '~/.goobook_cache',
+         'cache_expiry_hours': '24',
+         'filter_groupless_contacts': True,
+         'default_group': '',
+         })
     config_file = os.path.expanduser(config_file)
     parser = _get_config(config_file)
     if parser:
         config.get_dict().update(dict(parser.items('DEFAULT', raw=True)))
-        #Handle not string fields
+        # Handle not string fields
         if parser.has_option('DEFAULT', 'filter_groupless_contacts'):
             config.filter_groupless_contacts = parser.getboolean('DEFAULT', 'filter_groupless_contacts')
 
@@ -108,7 +110,7 @@ def read_config(config_file):
     if not config.password:
         raise ConfigError('No password could be found using any of the configuration alternatives')
 
-    #replace password field with a function.
+    # replace password field with a function.
     if config.password == 'prompt':
         config.password = _password_prompt
     else:
@@ -124,11 +126,13 @@ def read_config(config_file):
     log.debug(config)
     return config
 
+
 def _password_prompt():
     password = ''
     while not password:
         password = getpass.getpass()
     return password
+
 
 def _get_config(config_file):
     '''find, read and parse configuraton.'''

@@ -42,16 +42,17 @@ from .storage import Storage, storageify, unstorageify
 log = logging.getLogger(__name__)
 
 CACHE_FORMAT_VERSION = '4.0'
-G_MAX_SRESULTS = 9999 # Maximum number of entries to ask google for.
+G_MAX_SRESULTS = 9999  # Maximum number of entries to ask google for.
 GDATA_VERSION = '3'
 ATOM_NS = '{http://www.w3.org/2005/Atom}'
 G_NS = '{http://schemas.google.com/g/2005}'
 GC_NS = '{http://schemas.google.com/contact/2008}'
 
+
 class GooBook(object):
     '''This class can't be used as a library as it looks now, it uses sys.stdin
        print, sys.exit() and getpass().'''
-    def __init__ (self, config):
+    def __init__(self, config):
         self.__config = config
         self.cache = Cache(config)
         self.cache.load()
@@ -60,9 +61,9 @@ class GooBook(object):
         """Do the query, and print it out in
 
         """
-        #query contacts
+        # query contacts
         matching_contacts = sorted(self.__query_contacts(query), key=lambda c: c.title)
-        #query groups
+        # query groups
         matching_groups = sorted(self.__query_groups(query), key=lambda g: g.title)
         # mutt's query_command expects the first line to be a message,
         # which it discards.
@@ -75,7 +76,7 @@ class GooBook(object):
                 groups_str = ', '.join(('"' + g + '"' for g in groups))
                 for (emailaddr, kind) in emailaddrs:
                     title = contact.title or contact.nickname or emailaddr
-                    extra_str =  kind
+                    extra_str = kind
                     if groups_str:
                         extra_str = extra_str + ' groups: ' + groups_str
                     print (u'\t'.join((emailaddr, title, extra_str))).encode(self.__config.encoding, errors='replace')
@@ -94,9 +95,9 @@ class GooBook(object):
 
         out = codecs.getwriter(self.__config.encoding)(sys.stdout, errors='replace')
 
-        #query contacts
+        # query contacts
         matching_contacts = sorted(self.__query_contacts(query), key=lambda c: c.title)
-        #query groups
+        # query groups
         matching_groups = sorted(self.__query_groups(query), key=lambda g: g.title)
         for group in matching_groups:
             matching_contacts += group.contacts
@@ -123,7 +124,7 @@ class GooBook(object):
                 print >> out, "Address:"
                 for (address, kind) in contact.addresses:
                     lines = address.splitlines()
-                    lines[0] = '%s ( %s )' %  (lines[0], kind)
+                    lines[0] = '%s ( %s )' % (lines[0], kind)
                     print >> out, "\t" + '\n\t'.join(lines)
             if contact.groups:
                 print >> out, "Groups:"
@@ -132,23 +133,23 @@ class GooBook(object):
                 groups_str = '\n\t'.join(groups)
                 print >> out, "\t" + groups_str
 
-
     def __query_contacts(self, query):
-        match = re.compile(query, re.I).search # create a match function
+        match = re.compile(query, re.I).search  # create a match function
         for contact in self.cache.contacts:
             if self.__config.filter_groupless_contacts and not contact.groups:
-                continue # Skip contacts without groups
+                continue  # Skip contacts without groups
             if any(itertools.imap(match,
-                [contact.title, contact.nickname] + [unicode(number) for (number, kind) in contact.phonenumbers])):
+                                  [contact.title, contact.nickname] + [unicode(number) for
+                                                                       (number, kind) in contact.phonenumbers])):
                 yield contact
             else:
                 matching_addrs = [(email, kind) for (email, kind) in contact.emails if match(email)]
                 if matching_addrs:
-                    contact.emails = matching_addrs # only show matching
+                    contact.emails = matching_addrs  # only show matching
                     yield contact
 
     def __query_groups(self, query):
-        match = re.compile(query, re.I).search # create a match function
+        match = re.compile(query, re.I).search  # create a match function
         for group in self.cache.groups:
             # Collect all values to match against
             all_values = (group.title,)
@@ -164,21 +165,21 @@ class GooBook(object):
     def add_mail_contact(self, name, mailaddr):
         entry = ET.Element(ATOM_NS + 'entry')
         ET.SubElement(entry, ATOM_NS + 'category', scheme='http://schemas.google.com/g/2005#kind',
-                term='http://schemas.google.com/contact/2008#contact')
+                      term='http://schemas.google.com/contact/2008#contact')
         fullname_e = ET.Element(G_NS + 'fullName')
         fullname_e.text = name
         ET.SubElement(entry, G_NS + 'name').append(fullname_e)
         ET.SubElement(entry, G_NS + 'email', rel='http://schemas.google.com/g/2005#other', primary='true',
-                address=mailaddr)
+                      address=mailaddr)
 
         group_id = self.cache.get_group_by_title('System Group: My Contacts').id
         ET.SubElement(entry, GC_NS + 'groupMembershipInfo', deleted='false',
-                href=group_id)
+                      href=group_id)
 
         if self.__config.default_group:
             group_id2 = self.cache.get_group_by_title(self.__config.default_group).id
             ET.SubElement(entry, GC_NS + 'groupMembershipInfo', deleted='false',
-                    href=group_id2)
+                          href=group_id2)
 
         gcont = GoogleContacts(self.__config)
         log.debug('Going to create contact name: %s email: %s' % (name, mailaddr))
@@ -218,11 +219,12 @@ class GooBook(object):
 
         self.add_mail_contact(name, mailaddr)
 
+
 class Cache(object):
     def __init__(self, config):
         self.__config = config
-        self.contacts = None # list of Storage
-        self.groups = None # list of Storage
+        self.contacts = None  # list of Storage
+        self.groups = None  # list of Storage
 
     def load(self, force_update=False):
         """Load the cached addressbook feed, or fetch it (again) if it is
@@ -236,14 +238,14 @@ class Cache(object):
 
         # if cache newer than cache_expiry_hours
         if not force_update and (os.path.exists(self.__config.cache_filename) and
-                ((time.time() - os.path.getmtime(self.__config.cache_filename)) <
-                    (int(self.__config.cache_expiry_hours) * 60 * 60))):
+                                 ((time.time() - os.path.getmtime(self.__config.cache_filename)) <
+                                  (int(self.__config.cache_expiry_hours) * 60 * 60))):
             try:
                 log.debug('Loading cache: ' + self.__config.cache_filename)
                 cache = pickle.load(open(self.__config.cache_filename, 'rb'))
                 if cache.get('goobook_cache') != CACHE_FORMAT_VERSION:
                     log.info('Detected old cache format')
-                    cache = None # Old cache format
+                    cache = None  # Old cache format
             except StandardError, err:
                 log.info('Failed to read the cache file: %s', err)
                 raise
@@ -253,7 +255,7 @@ class Cache(object):
         else:
             self.update()
         if not self.contacts:
-            raise Exception('Failed to find any contacts') # TODO
+            raise Exception('Failed to find any contacts')  # TODO
 
     def update(self):
         log.info('Retrieving contact data from Google.')
@@ -266,7 +268,7 @@ class Cache(object):
         """Pickle the addressbook and a timestamp
 
         """
-        if self.contacts: # never write a empty addressbook
+        if self.contacts:  # never write a empty addressbook
             cache = {'contacts': unstorageify(self.contacts), 'groups': unstorageify(self.groups), 'goobook_cache': CACHE_FORMAT_VERSION}
             pickle.dump(cache, open(self.__config.cache_filename, 'wb'))
 
@@ -299,7 +301,7 @@ class Cache(object):
             contact.emails.append((ent.get('address'), label))
         # groups
         contact.groups = [e.get('href') for e in entry.findall(GC_NS + 'groupMembershipInfo') if
-            e.get('deleted') == 'false']
+                          e.get('deleted') == 'false']
         # phone
         contact.phonenumbers = []
         for ent in entry.findall(G_NS + 'phoneNumber'):
@@ -307,7 +309,7 @@ class Cache(object):
             contact.phonenumbers.append((ent.text, label))
         # birthday
         contact.birthday = entry.find(GC_NS + 'birthday').get('when') if entry.findall(GC_NS + 'birthday') else None
-        #address
+        # address
         contact.addresses = []
         for address in entry.findall(G_NS + 'structuredPostalAddress'):
             label = address.get('label') or address.get('rel').split('#')[-1]
@@ -352,15 +354,15 @@ class GoogleContacts(object):
 
         '''
         client = gdata.service.GDataService(additional_headers={'GData-Version': GDATA_VERSION})
-        client.ssl = True # TODO verify that this works
-        #client.debug = True
+        client.ssl = True  # TODO verify that this works
+        # client.debug = True
         client.ClientLogin(username=self.__email, password=password, service='cp', source='goobook')
         log.debug('Authenticated client')
         return client
 
     def _get(self, query):
         res = self.__client.Get(str(query), converter=ET.fromstring)
-        #TODO check not failed
+        # TODO check not failed
         return res
 
     def _post(self, data, query):
@@ -368,9 +370,9 @@ class GoogleContacts(object):
         data = ET.tostring(data)
         log.debug('POSTing to: %s\n%s', query, data)
         res = self.__client.Post(data, str(query))
-        log.debug('POST returned: %s' , res)
-        #res = self.__client.Post(data, str(query), converter=str)
-        #TODO check not failed
+        log.debug('POST returned: %s', res)
+        # res = self.__client.Post(data, str(query), converter=str)
+        # TODO check not failed
         return res
 
     def fetch_contacts(self):
@@ -388,4 +390,3 @@ class GoogleContacts(object):
     def create_contact(self, entry):
         query = gdata.service.Query('http://www.google.com/m8/feeds/contacts/default/full')
         self._post(entry, query)
-
