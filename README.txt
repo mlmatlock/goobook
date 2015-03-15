@@ -156,9 +156,8 @@ and::
 Links, Feedback and getting involved
 ====================================
 
-- Home page: http://code.google.com/p/goobook
 - PyPI home: http://pypi.python.org/pypi/goobook
+- Code Repository: http://gitlab.com/goobook/goobook
+- Issue tracker: http://gitlab.com/goobook/goobook
 - Mailing list: http://groups.google.com/group/goobook
-- Issue tracker: http://code.google.com/p/goobook/issues/list
-- Code Repository: http://gitorious.org/goobook
 

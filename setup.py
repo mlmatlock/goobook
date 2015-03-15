@@ -42,7 +42,7 @@ setup(name='goobook',
       long_description=UltraMagicString(README + '\n\n' + NEWS),
       maintainer=UltraMagicString('Christer Sjöholm'),
       maintainer_email='goobook@furuvik.net',
-      url='http://goobook.googlecode.com/',
+      url='http://gitlab.com/goobook/goobook',
       download_url='http://pypi.python.org/pypi/goobook',
       classifiers=[f.strip() for f in """
         Development Status :: 5 - Production/Stable
