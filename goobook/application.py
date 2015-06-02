@@ -4,12 +4,16 @@
 # author: Christer Sjöholm -- hcs AT furuvik DOT net
 
 from __future__ import absolute_import
-
+from pkg_resources import resource_filename
 import argparse
 import gdata.client
 import gdata.service
 import goobook.config
 import logging
+import oauth2client.client
+import oauth2client.file
+import oauth2client.tools
+import os
 import pkg_resources
 import sys
 import xml.etree.ElementTree as ElementTree
@@ -19,6 +23,7 @@ from goobook.goobook import GooBook, Cache, GoogleContacts
 log = logging.getLogger(__name__)
 
 CONFIG_FILE = '~/.goobookrc'
+SCOPES = 'https://www.google.com/m8/feeds'  #  read/write access to Contacts and Contact Groups
 
 
 def main():
@@ -71,6 +76,12 @@ def main():
                                           description='Force reload of the cache.')
     parser_reload.set_defaults(func=do_reload)
 
+    parser_reload = subparsers.add_parser('authenticate',
+                                          description='Google OAuth authentication.',
+                                          formatter_class=argparse.RawDescriptionHelpFormatter,
+                                          parents=[oauth2client.tools.argparser])
+    parser_reload.set_defaults(func=do_authenticate)
+
     args = [arg.decode(goobook.config.ENCODING) for arg in sys.argv[1:]]
     args = parser.parse_args(args)
 
@@ -82,10 +93,8 @@ def main():
         else:
             config = goobook.config.read_config(args.config)
         args.func(config, args)
-    except goobook.config.ConfigError, err:
+    except goobook.config.ConfigError as err:
         sys.exit(u'Configuration error: ' + unicode(err))
-    except gdata.service.BadAuthentication, err:
-        sys.exit(err)  # Incorrect username or password
 
 ##############################################################################
 # sub commands
@@ -126,6 +135,28 @@ def do_query_details(config, args):
 def do_reload(config, args):
     cache = Cache(config)
     cache.load(force_update=True)
+
+def do_authenticate(config, args):
+
+    store = config.store
+    creds = config.creds
+    #store = oauth2client.file.Storage(config.oauth_db_filename)
+    #creds = store.get()
+
+    if not creds or creds.invalid:
+        client_secret_filename = config.client_secret_filename
+        if not os.path.exists(client_secret_filename):
+            client_secret_filename = resource_filename(__name__, 'client_secret.json')
+        flow = oauth2client.client.flow_from_clientsecrets(client_secret_filename, SCOPES)
+        creds = oauth2client.tools.run_flow(flow, store, args)
+    else:
+        print 'You are already authenticated.'
+
+    #from apiclient.discovery import build
+    #from httplib2 import Http
+    # API information, i.e., (API='youtube', VERSION='v3')
+    #SERVICE = build(API, VERSION, http=creds.authorize(Http()))
+    #def run_flow(flow, storage, args, http=None):
 
 if __name__ == '__main__':
     main()

@@ -28,6 +28,7 @@ import codecs
 import email.parser
 import email.header
 import gdata.service
+import httplib2
 import itertools
 import logging
 import os
@@ -51,7 +52,7 @@ GC_NS = '{http://schemas.google.com/contact/2008}'
 
 class GooBook(object):
     '''This class can't be used as a library as it looks now, it uses sys.stdin
-       print, sys.exit() and getpass().'''
+       print and sys.exit().'''
     def __init__(self, config):
         self.__config = config
         self.cache = Cache(config)
@@ -346,34 +347,45 @@ class Cache(object):
 class GoogleContacts(object):
 
     def __init__(self, config):
-        self.__email = config.email
-        self.__client = self.__get_client(config.password())
+        self.__http_client = self.__get_client(config.creds)
+        self.__additional_headers = {
+            'GData-Version': GDATA_VERSION,
+            'Content-Type': 'application/atom+xml'
+        }
 
-    def __get_client(self, password):
+    def __get_client(self, credentials):
         '''Login to Google and return a ContactsClient object.
 
         '''
-        client = gdata.service.GDataService(additional_headers={'GData-Version': GDATA_VERSION})
-        client.ssl = True  # TODO verify that this works
-        # client.debug = True
-        client.ClientLogin(username=self.__email, password=password, service='cp', source='goobook')
-        log.debug('Authenticated client')
-        return client
+        if not credentials or credentials.invalid:
+            sys.exit(u'No or invalid credentials, run "goobook authenticate"')  # TODO raise exception instead
+        http_auth = credentials.authorize(httplib2.Http())
+        return http_auth
 
     def _get(self, query):
-        res = self.__client.Get(str(query), converter=ET.fromstring)
-        # TODO check not failed
+        resp_headers, content = self.__http_client.request(str(query),
+                                                           'GET',
+                                                           headers=self.__additional_headers,
+                                                           connection_type=httplib2.HTTPSConnectionWithTimeout)
+        log.debug('GET returned: %s', resp_headers)
+        if resp_headers['status'] != '200':
+            raise StandardError('Failed headers: {} content: {}'.format(resp_headers, content))
+        res = ET.fromstring(content)
         return res
 
     def _post(self, data, query):
         '''data is a ElementTree'''
         data = ET.tostring(data)
         log.debug('POSTing to: %s\n%s', query, data)
-        res = self.__client.Post(data, str(query))
-        log.debug('POST returned: %s', res)
+        resp_headers, content = self.__http_client.request(str(query),
+                                                           'POST',
+                                                           data,
+                                                           headers=self.__additional_headers,
+                                                           connection_type=httplib2.HTTPSConnectionWithTimeout)
+        if resp_headers['status'] != '201':
+            raise StandardError('Failed headers: {} content: {}'.format(resp_headers, content))
+        log.debug('POST returned: %s', resp_headers)
         # res = self.__client.Post(data, str(query), converter=str)
-        # TODO check not failed
-        return res
 
     def fetch_contacts(self):
         query = gdata.service.Query('http://www.google.com/m8/feeds/contacts/default/full')

@@ -1,6 +1,16 @@
 CHANGES
 =======
 
+1.7 2015-06-02
+----------------
+
+* Google no longer support ClientLogin (simple username/password)
+* Removed support for ClientLogin
+* Added OAuth2 support
+* Removed support for .netrc
+* Removed email, password, passwordeval fields from config
+* Removed support for keyring, this might be temporary
+
 1.6   2014-07-02
 ----------------
 * Issue 41 Changed keyring dependency into an extra.

@@ -1,2 +1,3 @@
 include *.txt
+include goobook/*.json
 include goobook.1

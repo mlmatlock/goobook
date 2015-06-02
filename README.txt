@@ -17,7 +17,6 @@ Installation Instructions
 There is a number of ways to install Python software.
 
 - Using pip
-- Using easy_install
 - Using a source tarball
 - Using source directly from gitorius
 - From a distribution specific repository
@@ -25,16 +24,13 @@ There is a number of ways to install Python software.
 pip or easy_install
 -------------------
 
-This is the recommended way to install goobook for most users.
+This is the recommended way to install goobook for most users that
+don't have it available in their distribution.
 When installing this way you will not need to download anything manually.
 
-Run pip or easy_install::
+Install like this::
 
     $ pip install goobook
-    $ easy_install -U goobook
-
-easy_install is part of setuptools which should come with most distributions,
-pip is a newer replacement.
 
 Source installation
 -------------------
@@ -48,13 +44,11 @@ Download the source tarball, uncompress it, then run the install command::
 Configure
 =========
 
-For most users it will be enough to add an entry to your ~/.netrc::
+For most users it will be enough to to run::
 
-    machine google.com
-      login your@google.email
-      password secret
+    $ goobook authenticate
 
-NOTE: The netrc implementation in Python don't support passwords with spaces, use the .goobookrc or keyring instead.
+and follow the instructions.
 
 To get access too more settings you can create a configuration file::
 
@@ -62,33 +56,30 @@ To get access too more settings you can create a configuration file::
 
 It will look like this::
 
+
     # "#" or ";" at the start of a line makes it a comment.
     [DEFAULT]
-    # If not given here, email and password is taken from .netrc using
-    # machine google.com
-    ;email: user@gmail.com
-    ;password: top secret
-    # or if you want to get the password from a commmand:
-    ;passwordeval: gpg --batch -d ~/.mutt/pw.gpg
     # The following are optional, defaults are shown
+
+    # This file is written by the oauth library, and should be kept secure,
+    # it's like a password to your google contacts.
+    ;oauth_db_filename: ~/.goobook_auth.json
+
+    # The client secret file is not really secret.
+    ;client_secret_filename: ~/.goobook_client_secret.json
+
     ;cache_filename: ~/.goobook_cache
     ;cache_expiry_hours: 24
+    ;filter_groupless_contacts: yes
+
+    # New contacts will be added to this group in addition to "My Contacts"
+    # Note that the group has to already exist on google or an error will occur.
+    # One use for this is to add new contacts to an "Unsorted" group, which can
+    # be sorted easier than all of "My Contacts".
+    ;default_group:
 
 
-If you set the password to "prompt" you will be prompted each time the password is needed
-but this does not work well with mutt.
-
-Instead of being a plain config file ``.goobookrc`` can be an executable,
-in which case it's output will be used as configuration.
-
-For example if you want to store your configuration encrypted with GnuPG as ``.goobookrc.gpg``
-you can use a ``.goobookrc`` like this::
-
-    #!/bin/sh
-    gpg --no-tty --use-agent -q -d ~/.goobookrc.gpg
-
-You will need to have a appropriate gpg-agent/pinentry setup, you will not be prompted
-for the gpg passphrase on the console.
+NOTE:: The keyring support is not available at the moment but might reappear.
 
 Similarly, goobook supports authentication by keyring_. The keyring package
 supports multiple backends, depending on your
