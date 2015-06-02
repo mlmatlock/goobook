@@ -10,6 +10,7 @@ CHANGES
 * Removed support for .netrc
 * Removed email, password, passwordeval fields from config
 * Removed support for keyring, this might be temporary
+* Removed support for executable .goobookrc
 
 1.6   2014-07-02
 ----------------
