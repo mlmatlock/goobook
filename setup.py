@@ -65,5 +65,6 @@ setup(name='goobook',
           'keychain': ['keyring>=0.2']
       },
       packages=find_packages(),
-      entry_points={'console_scripts': ['goobook = goobook.application:main']}
+      entry_points={'console_scripts': ['goobook = goobook.application:main']},
+      package_data={'goobook': ['client_secret.json']}
       )
