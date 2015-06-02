@@ -9,7 +9,6 @@ import locale
 import logging
 import oauth2client.client
 import os
-import subprocess
 
 from .storage import Storage
 from os.path import realpath, expanduser

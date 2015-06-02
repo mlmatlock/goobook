@@ -270,7 +270,9 @@ class Cache(object):
 
         """
         if self.contacts:  # never write a empty addressbook
-            cache = {'contacts': unstorageify(self.contacts), 'groups': unstorageify(self.groups), 'goobook_cache': CACHE_FORMAT_VERSION}
+            cache = {'contacts': unstorageify(self.contacts),
+                     'groups': unstorageify(self.groups),
+                     'goobook_cache': CACHE_FORMAT_VERSION}
             pickle.dump(cache, open(self.__config.cache_filename, 'wb'))
 
     def get_group(self, id_):

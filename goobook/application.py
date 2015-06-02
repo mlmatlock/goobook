@@ -6,8 +6,6 @@
 from __future__ import absolute_import
 from pkg_resources import resource_filename
 import argparse
-import gdata.client
-import gdata.service
 import goobook.config
 import logging
 import oauth2client.client
@@ -23,7 +21,7 @@ from goobook.goobook import GooBook, Cache, GoogleContacts
 log = logging.getLogger(__name__)
 
 CONFIG_FILE = '~/.goobookrc'
-SCOPES = 'https://www.google.com/m8/feeds'  #  read/write access to Contacts and Contact Groups
+SCOPES = 'https://www.google.com/m8/feeds'  # read/write access to Contacts and Contact Groups
 
 
 def main():
@@ -67,8 +65,9 @@ def main():
     parser_query.add_argument('query', help='regex to search for.', metavar='QUERY')
     parser_query.set_defaults(func=do_query)
 
-    parser_query_details = subparsers.add_parser('dquery',
-                                                 description='Search contacts using query (regex) and print out all info.')
+    parser_query_details = subparsers.add_parser(
+        'dquery',
+        description='Search contacts using query (regex) and print out all info.')
     parser_query_details.add_argument('query', help='regex to search for.')
     parser_query_details.set_defaults(func=do_query_details)
 
@@ -136,12 +135,10 @@ def do_reload(config, args):
     cache = Cache(config)
     cache.load(force_update=True)
 
-def do_authenticate(config, args):
 
+def do_authenticate(config, args):
     store = config.store
     creds = config.creds
-    #store = oauth2client.file.Storage(config.oauth_db_filename)
-    #creds = store.get()
 
     if not creds or creds.invalid:
         client_secret_filename = config.client_secret_filename
@@ -152,11 +149,6 @@ def do_authenticate(config, args):
     else:
         print 'You are already authenticated.'
 
-    #from apiclient.discovery import build
-    #from httplib2 import Http
-    # API information, i.e., (API='youtube', VERSION='v3')
-    #SERVICE = build(API, VERSION, http=creds.authorize(Http()))
-    #def run_flow(flow, storage, args, http=None):
 
 if __name__ == '__main__':
     main()
