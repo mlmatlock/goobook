@@ -1,8 +1,13 @@
 CHANGES
 =======
 
+1.8 2015-06-03
+--------------
+
+* Fixed so that the included client_secrets.json is installed with the source.
+
 1.7 2015-06-02
-----------------
+--------------
 
 * Google no longer support ClientLogin (simple username/password)
 * Removed support for ClientLogin

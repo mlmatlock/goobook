@@ -37,7 +37,7 @@ class UltraMagicString(object):
         return self.value.split(*args, **kw)
 
 setup(name='goobook',
-      version='1.7',
+      version='1.8',
       description='Search your google contacts from the command-line or mutt.',
       long_description=UltraMagicString(README + '\n\n' + NEWS),
       maintainer=UltraMagicString('Christer Sjöholm'),
@@ -64,6 +64,8 @@ setup(name='goobook',
       extras_require={
           'keychain': ['keyring>=0.2']
       },
+      include_package_data=True,
+      zip_safe=False,
       packages=find_packages(),
       entry_points={'console_scripts': ['goobook = goobook.application:main']}
       )
