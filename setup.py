@@ -56,11 +56,11 @@ setup(name='goobook',
         """.splitlines() if f.strip()],
       license='GPLv3',
       install_requires=[
-          'oauth2client>=1.4.11',
+          'oauth2client>=1.2',
           'setuptools>=0.7',
           'gdata>=2.0.18',
           'simplejson>=2.1.0',
-          'httplib2>=0.9.1'],
+          'httplib2>=0.9'],
       extras_require={
           'keychain': ['keyring>=0.2']
       },
