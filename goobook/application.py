@@ -27,15 +27,15 @@ SCOPES = 'https://www.google.com/m8/feeds'  # read/write access to Contacts and 
 def main():
     parser = argparse.ArgumentParser(description='Search you Google contacts from mutt or the command-line.')
     parser.add_argument('-c', '--config', help='Specify alternative configuration file.', metavar="FILE")
-    parser.add_argument('-v', '--verbose', dest="logging_level", action='store_const',
+    parser.add_argument('-v', '--verbose', dest="log_level", action='store_const',
                         const=logging.INFO, help='Be verbose about what is going on (stderr).')
     parser.add_argument('-V', '--version',
                         action='version',
                         version='%%(prog)s %s' % pkg_resources.get_distribution("goobook").version,
                         help="Print version and exit")
-    parser.add_argument('-d', '--debug', dest="logging_level", action='store_const',
+    parser.add_argument('-d', '--debug', dest="log_level", action='store_const',
                         const=logging.DEBUG, help='Output debug info (stderr).')
-    parser.set_defaults(config=CONFIG_FILE, logging_level=logging.ERROR)
+    parser.set_defaults(config=CONFIG_FILE, log_level=logging.ERROR)
 
     subparsers = parser.add_subparsers()
 
@@ -84,7 +84,7 @@ def main():
     args = [arg.decode(goobook.config.ENCODING) for arg in sys.argv[1:]]
     args = parser.parse_args(args)
 
-    logging.basicConfig(level=args.logging_level)
+    logging.basicConfig(level=args.log_level)
 
     try:
         if args.func == do_config_template:
