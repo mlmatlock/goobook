@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+1.10 2016-07-04
+--------------
+* Change required versions for oauth2client/httplib2
+* Update GooBook's manpage
+
 1.9 2015-06-03
 --------------
 * #55 Fixed argument conflict between goobook and oauth2client

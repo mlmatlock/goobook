@@ -58,6 +58,7 @@ class GooBook(object):
         self.cache = Cache(config)
         self.cache.load()
 
+
     def query(self, query):
         """Do the query, and print it out in
 
