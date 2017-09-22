@@ -3,7 +3,7 @@
 # vim: fileencoding=UTF-8 filetype=python ff=unix et ts=4 sw=4 sts=4 tw=120
 # author: Christer Sjöholm -- hcs AT furuvik DOT net
 
-from __future__ import absolute_import
+
 from pkg_resources import resource_filename
 import argparse
 import goobook.config
@@ -93,7 +93,7 @@ def main():
             config = goobook.config.read_config(args.config)
         args.func(config, args)
     except goobook.config.ConfigError as err:
-        sys.exit(u'Configuration error: ' + unicode(err))
+        sys.exit('Configuration error: ' + str(err))
 
 ##############################################################################
 # sub commands
@@ -108,17 +108,17 @@ def do_add(config, args):
 
 
 def do_config_template(config, args):
-    print goobook.config.TEMPLATE
+    print(goobook.config.TEMPLATE)
 
 
 def do_dump_contacts(config, args):
     goco = GoogleContacts(config)
-    print ElementTree.tostring(goco.fetch_contacts(), 'UTF-8')
+    print(ElementTree.tostring(goco.fetch_contacts(), 'UTF-8'))
 
 
 def do_dump_groups(config, args):
     goco = GoogleContacts(config)
-    print ElementTree.tostring(goco.fetch_contact_groups(), 'UTF-8')
+    print(ElementTree.tostring(goco.fetch_contact_groups(), 'UTF-8'))
 
 
 def do_query(config, args):
@@ -147,7 +147,7 @@ def do_authenticate(config, args):
         flow = oauth2client.client.flow_from_clientsecrets(client_secret_filename, SCOPES)
         creds = oauth2client.tools.run_flow(flow, store, args)
     else:
-        print 'You are already authenticated.'
+        print('You are already authenticated.')
 
 
 if __name__ == '__main__':

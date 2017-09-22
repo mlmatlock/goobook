@@ -2,10 +2,10 @@
 # vim: fileencoding=UTF-8 filetype=python ff=unix et ts=4 sw=4 sts=4 tw=120
 # author: Christer Sjöholm -- hcs AT furuvik DOT net
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+
+
+
+
 
 import collections
 import json
@@ -75,7 +75,7 @@ class Storage(object):
             self._denormalize = denormalize
         else:
             self._denormalize = lambda key: key  # Do nothing
-        for key, value in kwargs.items():
+        for key, value in list(kwargs.items()):
             self[key] = value
 
     def get_dict(self):
@@ -88,7 +88,7 @@ class Storage(object):
         ''' Iterate over all (key, value) pairs.
         All keys will be denormalized.
         '''
-        for key, value in self._dict.items():
+        for key, value in list(self._dict.items()):
             yield self._denormalize(key), value
 
     def __getattr__(self, key):
@@ -204,7 +204,7 @@ def storageify(obj, storageFactory=Storage):
     '''
     if isinstance(obj, dict):
         res = storageFactory()
-        for key, value in obj.items():
+        for key, value in list(obj.items()):
             res[key] = storageify(value, storageFactory=storageFactory)
     elif isinstance(obj, list):
         res = []
@@ -223,11 +223,11 @@ def unstorageify(obj):
     '''
     if isinstance(obj, Storage):
         res = {}
-        for key, value in obj.get_dict().items():
+        for key, value in list(obj.get_dict().items()):
             res[key] = unstorageify(value)
     elif isinstance(obj, dict):
         res = {}
-        for key, value in obj.items():
+        for key, value in list(obj.items()):
             res[key] = unstorageify(value)
     elif isinstance(obj, list):
         res = []

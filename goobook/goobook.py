@@ -69,7 +69,7 @@ class GooBook(object):
         matching_groups = sorted(self.__query_groups(query), key=lambda g: g.title)
         # mutt's query_command expects the first line to be a message,
         # which it discards.
-        print "\n",
+        print("\n", end=' ')
         for contact in matching_contacts:
             if contact.emails:
                 emailaddrs = sorted(contact.emails)
@@ -81,13 +81,13 @@ class GooBook(object):
                     extra_str = kind
                     if groups_str:
                         extra_str = extra_str + ' groups: ' + groups_str
-                    print (u'\t'.join((emailaddr, title, extra_str))).encode(self.__config.encoding, errors='replace')
+                    print(('\t'.join((emailaddr, title, extra_str))).encode(self.__config.encoding, errors='replace'))
         for group in matching_groups:
             emails = ['%s <%s>' % (c.title, c.emails[0][0]) for c in group.contacts if c.emails]
             emails = ', '.join(emails)
             if not emails:
                 continue
-            print (u'%s\t%s (group)' % (emails, group.title)).encode(self.__config.encoding, errors='replace')
+            print(('%s\t%s (group)' % (emails, group.title)).encode(self.__config.encoding, errors='replace'))
 
     def query_details(self, query):
         """
@@ -105,43 +105,43 @@ class GooBook(object):
             matching_contacts += group.contacts
 
         for contact in matching_contacts:
-            print >> out, "-------------------------"
-            print >> out, contact.title
+            print("-------------------------", file=out)
+            print(contact.title, file=out)
             if contact.birthday:
-                print >> out, "Birthday: ", contact.birthday
+                print("Birthday: ", contact.birthday, file=out)
             if contact.phonenumbers:
-                print >> out, "Phone:"
+                print("Phone:", file=out)
                 for (number, kind) in contact.phonenumbers:
-                    print >> out, "\t", number, " (" + kind + ")"
+                    print("\t", number, " (" + kind + ")", file=out)
             if contact.emails:
-                print >> out, "EMail:"
+                print("EMail:", file=out)
                 emailaddrs = sorted(contact.emails)
                 for (emailaddr, kind) in emailaddrs:
-                    print >> out, "\t", emailaddr, " (" + kind + ")"
+                    print("\t", emailaddr, " (" + kind + ")", file=out)
             if contact.im:
-                print >> out, "IM:"
+                print("IM:", file=out)
                 for (nick, protocol) in contact.im:
-                    print >> out, "\t", nick, " (", protocol, ")"
+                    print("\t", nick, " (", protocol, ")", file=out)
             if contact.addresses:
-                print >> out, "Address:"
+                print("Address:", file=out)
                 for (address, kind) in contact.addresses:
                     lines = address.splitlines()
                     lines[0] = '%s ( %s )' % (lines[0], kind)
-                    print >> out, "\t" + '\n\t'.join(lines)
+                    print("\t" + '\n\t'.join(lines), file=out)
             if contact.groups:
-                print >> out, "Groups:"
+                print("Groups:", file=out)
                 groups = set(self.cache.get_group(gid).title for gid in contact.groups)
                 groups = groups.difference(('System Group: My Contacts',))
                 groups_str = '\n\t'.join(groups)
-                print >> out, "\t" + groups_str
+                print("\t" + groups_str, file=out)
 
     def __query_contacts(self, query):
         match = re.compile(query, re.I).search  # create a match function
         for contact in self.cache.contacts:
             if self.__config.filter_groupless_contacts and not contact.groups:
                 continue  # Skip contacts without groups
-            if any(itertools.imap(match,
-                                  [contact.title, contact.nickname] + [unicode(number) for
+            if any(map(match,
+                                  [contact.title, contact.nickname] + [str(number) for
                                                                        (number, kind) in contact.phonenumbers])):
                 yield contact
             else:
@@ -155,7 +155,7 @@ class GooBook(object):
         for group in self.cache.groups:
             # Collect all values to match against
             all_values = (group.title,)
-            if any(itertools.imap(match, all_values)):
+            if any(map(match, all_values)):
                 group.contacts = list(self.__get_group_contacts(group.id))
                 yield group
 
@@ -200,7 +200,7 @@ class GooBook(object):
         parser = email.parser.HeaderParser()
         headers = parser.parse(lines)
         if 'From' not in headers:
-            print "Not a valid mail file!"
+            print("Not a valid mail file!")
             sys.exit(2)
 
         (name, mailaddr) = email.utils.parseaddr(headers['From'])
@@ -248,7 +248,7 @@ class Cache(object):
                 if cache.get('goobook_cache') != CACHE_FORMAT_VERSION:
                     log.info('Detected old cache format')
                     cache = None  # Old cache format
-            except StandardError, err:
+            except Exception as err:
                 log.info('Failed to read the cache file: %s', err)
                 raise
         if cache:
@@ -361,7 +361,7 @@ class GoogleContacts(object):
 
         '''
         if not credentials or credentials.invalid:
-            sys.exit(u'No or invalid credentials, run "goobook authenticate"')  # TODO raise exception instead
+            sys.exit('No or invalid credentials, run "goobook authenticate"')  # TODO raise exception instead
         http_auth = credentials.authorize(httplib2.Http())
         return http_auth
 
@@ -372,7 +372,7 @@ class GoogleContacts(object):
                                                            connection_type=httplib2.HTTPSConnectionWithTimeout)
         log.debug('GET returned: %s', resp_headers)
         if resp_headers['status'] != '200':
-            raise StandardError('Failed headers: {} content: {}'.format(resp_headers, content))
+            raise Exception('Failed headers: {} content: {}'.format(resp_headers, content))
         res = ET.fromstring(content)
         return res
 
@@ -386,7 +386,7 @@ class GoogleContacts(object):
                                                            headers=self.__additional_headers,
                                                            connection_type=httplib2.HTTPSConnectionWithTimeout)
         if resp_headers['status'] != '201':
-            raise StandardError('Failed headers: {} content: {}'.format(resp_headers, content))
+            raise Exception('Failed headers: {} content: {}'.format(resp_headers, content))
         log.debug('POST returned: %s', resp_headers)
         # res = self.__client.Post(data, str(query), converter=str)
 

@@ -2,9 +2,9 @@
 # vim: fileencoding=UTF-8 filetype=python ff=unix et ts=4 sw=4 sts=4 tw=120
 # author: Christer Sjöholm -- hcs AT furuvik DOT net
 
-from __future__ import absolute_import
 
-import ConfigParser
+
+import configparser
 import locale
 import logging
 import oauth2client.client
@@ -82,17 +82,17 @@ def read_config(config_file):
 
 def _get_config(config_file):
     '''find, read and parse configuraton.'''
-    parser = ConfigParser.SafeConfigParser()
+    parser = configparser.SafeConfigParser()
     if os.path.lexists(config_file):
         try:
             log.info('Reading config: %s', config_file)
             inp = open(config_file)
             parser.readfp(inp)
             return parser
-        except (IOError, ConfigParser.ParsingError), err:
+        except (IOError, configparser.ParsingError) as err:
             raise ConfigError("Failed to read configuration %s\n%s" % (config_file, err))
     return None
 
 
-class ConfigError(StandardError):
+class ConfigError(Exception):
     pass
