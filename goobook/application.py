@@ -16,7 +16,8 @@ import pkg_resources
 import json
 import sys
 
-from goobook.goobook import GooBook, Cache, GoogleContacts
+from goobook.goobook import GooBook, Cache, GoogleContacts, parse_groups, parse_contacts
+from .storage import unstorageify
 
 log = logging.getLogger(__name__)
 
@@ -53,11 +54,13 @@ def main():
     parser_config_template.set_defaults(func=do_config_template)
 
     parser_dump_contacts = subparsers.add_parser('dump_contacts',
-                                                 description='Dump contacts as XML.')
+                                                 description='Dump contacts as JSON.')
+    parser_dump_contacts.add_argument('-p', '--parse', action='store_true', help='Dump parsed contact instead of raw.')
     parser_dump_contacts.set_defaults(func=do_dump_contacts)
 
     parser_dump_groups = subparsers.add_parser('dump_groups',
-                                               description='Dump groups as XML.')
+                                               description='Dump groups as JSON.')
+    parser_dump_groups.add_argument('-p', '--parse', action='store_true', help='Dump parsed contact instead of raw.')
     parser_dump_groups.set_defaults(func=do_dump_groups)
 
     parser_query = subparsers.add_parser('query',
@@ -75,11 +78,11 @@ def main():
                                           description='Force reload of the cache.')
     parser_reload.set_defaults(func=do_reload)
 
-    parser_reload = subparsers.add_parser('authenticate',
+    parser_auth = subparsers.add_parser('authenticate',
                                           description='Google OAuth authentication.',
                                           formatter_class=argparse.RawDescriptionHelpFormatter,
                                           parents=[oauth2client.tools.argparser])
-    parser_reload.set_defaults(func=do_authenticate)
+    parser_auth.set_defaults(func=do_authenticate)
 
     args = parser.parse_args()
 
@@ -115,12 +118,22 @@ def do_config_template(config, args):
 
 def do_dump_contacts(config, args):
     goco = GoogleContacts(config)
-    print(json.dumps(goco.fetch_contacts(), sort_keys=True, indent=4, ensure_ascii=False))
+    contacts = goco.fetch_contacts()
+    if args.parse:
+        groupname_by_id = parse_groups(goco.fetch_contact_groups())
+        contacts = unstorageify(list(parse_contacts(goco.fetch_contacts(), groupname_by_id)))
+
+    print(json.dumps(contacts, sort_keys=True, indent=4, ensure_ascii=False))
 
 
 def do_dump_groups(config, args):
     goco = GoogleContacts(config)
-    print(json.dumps(goco.fetch_contact_groups(), sort_keys=True, indent=4, ensure_ascii=False))
+    groups = goco.fetch_contact_groups()
+    if args.parse:
+        groupname_by_id = parse_groups(goco.fetch_contact_groups())
+        groups = unstorageify(list(groupname_by_id.values()))
+
+    print(json.dumps(groups, sort_keys=True, indent=4, ensure_ascii=False))
 
 
 def do_query(config, args):

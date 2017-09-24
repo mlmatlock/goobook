@@ -263,8 +263,8 @@ class Cache(object):
     def update(self):
         log.info('Retrieving contact data from Google.')
         gc = GoogleContacts(self.__config)
-        groupname_by_id = self._parse_groups(gc.fetch_contact_groups())
-        self.contacts = list(self._parse_contacts(gc.fetch_contacts(), groupname_by_id))
+        groupname_by_id = parse_groups(gc.fetch_contact_groups())
+        self.contacts = list(parse_contacts(gc.fetch_contacts(), groupname_by_id))
         self.groups = list(groupname_by_id.values())
         self.save()
 
@@ -290,97 +290,97 @@ class Cache(object):
     #             return group
     #     raise KeyError('Group: ' + title)
 
-    @staticmethod
-    def _parse_contact(person, groupname_by_id):
-        '''Extracts interesting contact info from cache.'''
-        contact = Storage()
-        contact.emails = []
-        contact.birthday = []  # TODO
-        contact.im = []  # TODO
-        contact.addresses = []  # TODO
-        contact.display_name = None
-        contact.nickname = None
-        contact.all_names = set()
-        contact.groups = []
-        contact.phonenumbers = []
 
-        for emaila in person.get('emailAddresses', []):
-            contact.emails.append(TypedValue(emaila['value'], emaila.get('type', '')))
+def parse_contact(person, groupname_by_id):
+    '''Extracts interesting contact info from cache.'''
+    contact = Storage()
+    contact.emails = []
+    contact.birthday = []  # TODO
+    contact.im = []  # TODO
+    contact.addresses = []  # TODO
+    contact.display_name = None
+    contact.nickname = None
+    contact.all_names = []
+    contact.groups = []
+    contact.phonenumbers = []
 
-        for name in person.get('names', []):
-            if 'displayName' in name and contact.display_name is None:
-                # use first displayName found
-                contact.display_name = name['displayName']
-            for field in ("displayName", "displayNameLastFirst", "familyName", "givenName", "middleName",
-                          "honorificPrefix", "honorificSuffix", "phoneticFullName", "phoneticFamilyName",
-                          "phoneticGivenName", "phoneticMiddleName", "phoneticHonorificPrefix",
-                          "phoneticHonorificSuffix"):
-                if field in name:
-                    contact.all_names.add(name[field])
+    for emaila in person.get('emailAddresses', []):
+        contact.emails.append(TypedValue(emaila['value'], emaila.get('type', '')))
 
-        #contact.nickname = contact.displayName = contact.id = contact.title = person['names'][0]['displayName']
+    for name in person.get('names', []):
+        if 'displayName' in name and contact.display_name is None:
+            # use first displayName found
+            contact.display_name = name['displayName']
+        for field in ("displayName", "displayNameLastFirst", "familyName", "givenName", "middleName",
+                      "honorificPrefix", "honorificSuffix", "phoneticFullName", "phoneticFamilyName",
+                      "phoneticGivenName", "phoneticMiddleName", "phoneticHonorificPrefix",
+                      "phoneticHonorificSuffix"):
+            if field in name:
+                contact.all_names.append(name[field])
 
-        if contact.display_name is None:
-            # if there is no displayName use a email address
-            if contact.emails:
-                contact.display_name = contact.emails[0].value
-            else:
-                return None  # No name and no email...
+    #contact.nickname = contact.displayName = contact.id = contact.title = person['names'][0]['displayName']
 
-        for membership in person.get('memberships', []):
-            if "contactGroupMembership" in membership:
-                contact.groups.append(groupname_by_id['contactGroups/' +
-                                                      membership['contactGroupMembership']['contactGroupId']])
+    if contact.display_name is None:
+        # if there is no displayName use a email address
+        if contact.emails:
+            contact.display_name = contact.emails[0].value
+        else:
+            return None  # No name and no email...
 
-        for phone in person.get('phoneNumbers', []):
-            contact.phonenumbers.append(TypedValue(phone['value'], phone.get('type', '')))
+    for membership in person.get('memberships', []):
+        if "contactGroupMembership" in membership:
+            contact.groups.append(groupname_by_id['contactGroups/' +
+                                                  membership['contactGroupMembership']['contactGroupId']])
 
-        # # ID
-        # contact.id = entry.findtext(ATOM_NS + 'id')
-        # # title
-        # contact.title = entry.findtext(ATOM_NS + 'title')
-        # # nickname
-        # contact.nickname = entry.findtext(GC_NS + 'nickname', default='')
-        # # emails
-        # contact.emails = []
-        # for ent in entry.findall(G_NS + 'email'):
-        #     label = ent.get('label') or ent.get('rel').split('#')[-1]
-        #     contact.emails.append((ent.get('address'), label))
-        # # groups
-        # contact.groups = [e.get('href') for e in entry.findall(GC_NS + 'groupMembershipInfo') if
-        #                   e.get('deleted') == 'false']
-        # # phone
-        # contact.phonenumbers = []
-        # for ent in entry.findall(G_NS + 'phoneNumber'):
-        #     label = ent.get('label') or ent.get('rel').split('#')[-1]
-        #     contact.phonenumbers.append((ent.text, label))
-        # # birthday
-        # contact.birthday = entry.find(GC_NS + 'birthday').get('when') if entry.findall(GC_NS + 'birthday') else None
-        # # address
-        # contact.addresses = []
-        # for address in entry.findall(G_NS + 'structuredPostalAddress'):
-        #     label = address.get('label') or address.get('rel').split('#')[-1]
-        #     contact.addresses.append((address.findtext(G_NS + 'formattedAddress'), label))
-        # # IM
-        # contact.im = []
-        # for ent in entry.findall(G_NS + 'im'):
-        #     protocol = ent.get('protocol')
-        #     # Default protocol is GOOGLE_TALK
-        #     protocol = ent.get('protocol').split('#')[-1] if protocol else "GOOGLE_TALK"
-        #     contact.im.append((ent.get('address'), protocol))
+    for phone in person.get('phoneNumbers', []):
+        contact.phonenumbers.append(TypedValue(phone['value'], phone.get('type', '')))
 
-        log.debug('Parsed contact %s', contact)
-        return contact
+    # # ID
+    # contact.id = entry.findtext(ATOM_NS + 'id')
+    # # title
+    # contact.title = entry.findtext(ATOM_NS + 'title')
+    # # nickname
+    # contact.nickname = entry.findtext(GC_NS + 'nickname', default='')
+    # # emails
+    # contact.emails = []
+    # for ent in entry.findall(G_NS + 'email'):
+    #     label = ent.get('label') or ent.get('rel').split('#')[-1]
+    #     contact.emails.append((ent.get('address'), label))
+    # # groups
+    # contact.groups = [e.get('href') for e in entry.findall(GC_NS + 'groupMembershipInfo') if
+    #                   e.get('deleted') == 'false']
+    # # phone
+    # contact.phonenumbers = []
+    # for ent in entry.findall(G_NS + 'phoneNumber'):
+    #     label = ent.get('label') or ent.get('rel').split('#')[-1]
+    #     contact.phonenumbers.append((ent.text, label))
+    # # birthday
+    # contact.birthday = entry.find(GC_NS + 'birthday').get('when') if entry.findall(GC_NS + 'birthday') else None
+    # # address
+    # contact.addresses = []
+    # for address in entry.findall(G_NS + 'structuredPostalAddress'):
+    #     label = address.get('label') or address.get('rel').split('#')[-1]
+    #     contact.addresses.append((address.findtext(G_NS + 'formattedAddress'), label))
+    # # IM
+    # contact.im = []
+    # for ent in entry.findall(G_NS + 'im'):
+    #     protocol = ent.get('protocol')
+    #     # Default protocol is GOOGLE_TALK
+    #     protocol = ent.get('protocol').split('#')[-1] if protocol else "GOOGLE_TALK"
+    #     contact.im.append((ent.get('address'), protocol))
 
-    def _parse_contacts(self, raw_contacts, groupname_by_id):
-        for contact in raw_contacts:
-            yield self._parse_contact(contact, groupname_by_id)
+    log.debug('Parsed contact %s', contact)
+    return contact
 
-    def _parse_groups(self, raw_groups):
-        groupname_by_id = {}
-        for entry in raw_groups:
-            groupname_by_id[entry['resourceName']] = entry['formattedName']
-        return groupname_by_id
+def parse_contacts(raw_contacts, groupname_by_id):
+    for contact in raw_contacts:
+        yield parse_contact(contact, groupname_by_id)
+
+def parse_groups(raw_groups):
+    groupname_by_id = {}
+    for entry in raw_groups:
+        groupname_by_id[entry['resourceName']] = entry['formattedName']
+    return groupname_by_id
 
 
 class GoogleContacts(object):
