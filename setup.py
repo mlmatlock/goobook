@@ -36,6 +36,7 @@ class UltraMagicString(object):
     def split(self, *args, **kw):
         return self.value.split(*args, **kw)
 
+
 setup(name='goobook',
       version='1.10',
       description='Search your google contacts from the command-line or mutt.',
@@ -49,18 +50,16 @@ setup(name='goobook',
         Environment :: Console
         Operating System :: OS Independent
         Programming Language :: Python
-        Programming Language :: Python :: 2.7
+        Programming Language :: Python :: 3.6
         Intended Audience :: End Users/Desktop
         License :: OSI Approved :: GNU General Public License (GPL)
         Topic :: Communications :: Email :: Address Book
         """.splitlines() if f.strip()],
       license='GPLv3',
       install_requires=[
-          'oauth2client>=1.2',
-          'setuptools>=0.7',
-          'gdata>=2.0.18',
+          'google-api-python-client>=1.6.4',
           'simplejson>=2.1.0',
-          'httplib2>=0.9'],
+          ],
       extras_require={
           'keychain': ['keyring>=0.2']
       },

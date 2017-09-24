@@ -13,8 +13,8 @@ import oauth2client.file
 import oauth2client.tools
 import os
 import pkg_resources
+import json
 import sys
-import xml.etree.ElementTree as ElementTree
 
 from goobook.goobook import GooBook, Cache, GoogleContacts
 
@@ -81,10 +81,12 @@ def main():
                                           parents=[oauth2client.tools.argparser])
     parser_reload.set_defaults(func=do_authenticate)
 
-    args = [arg.decode(goobook.config.ENCODING) for arg in sys.argv[1:]]
-    args = parser.parse_args(args)
+    args = parser.parse_args()
 
     logging.basicConfig(level=args.log_level)
+
+    if 'func' not in args:
+        parser.error('To few arguments.')
 
     try:
         if args.func == do_config_template:
@@ -113,12 +115,12 @@ def do_config_template(config, args):
 
 def do_dump_contacts(config, args):
     goco = GoogleContacts(config)
-    print(ElementTree.tostring(goco.fetch_contacts(), 'UTF-8'))
+    print(json.dumps(goco.fetch_contacts(), sort_keys=True, indent=4, ensure_ascii=False))
 
 
 def do_dump_groups(config, args):
     goco = GoogleContacts(config)
-    print(ElementTree.tostring(goco.fetch_contact_groups(), 'UTF-8'))
+    print(json.dumps(goco.fetch_contact_groups(), sort_keys=True, indent=4, ensure_ascii=False))
 
 
 def do_query(config, args):
