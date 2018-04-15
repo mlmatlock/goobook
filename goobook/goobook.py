@@ -22,12 +22,9 @@
 The idea is make an interface to google contacts that mimics the behaviour of
 abook for mutt.
 '''
-from apiclient.discovery import build
 import collections
 import email.parser
 import email.header
-#import gdata.service
-import httplib2
 import logging
 import os
 import pickle
@@ -35,7 +32,11 @@ import re
 import sys
 import time
 
-from .storage import Storage, storageify, unstorageify
+import httplib2
+from apiclient.discovery import build
+# import gdata.service
+
+from goobook.storage import Storage, storageify, unstorageify
 
 log = logging.getLogger(__name__)
 
@@ -48,6 +49,7 @@ GC_NS = '{http://schemas.google.com/contact/2008}'
 
 TypedValue = collections.namedtuple('TypedValue', ['value', 'type'])
 
+
 class GooBook(object):
     '''This class can't be used as a library as it looks now, it uses sys.stdin
        print and sys.exit().'''
@@ -55,7 +57,6 @@ class GooBook(object):
         self.__config = config
         self.cache = Cache(config)
         self.cache.load()
-
 
     def query(self, query):
         """Do the query, and print it out in
@@ -177,7 +178,6 @@ class GooBook(object):
         #     group_id2 = self.cache.get_group_by_title(self.__config.default_group).id
         #     ET.SubElement(entry, GC_NS + 'groupMembershipInfo', deleted='false',
         #                   href=group_id2)
-
 
         contact = {
             'names': [{'displayName': name}],
@@ -318,7 +318,7 @@ def parse_contact(person, groupname_by_id):
             if field in name:
                 contact.all_names.append(name[field])
 
-    #contact.nickname = contact.displayName = contact.id = contact.title = person['names'][0]['displayName']
+    # contact.nickname = contact.displayName = contact.id = contact.title = person['names'][0]['displayName']
 
     if contact.display_name is None:
         # if there is no displayName use a email address
@@ -372,9 +372,11 @@ def parse_contact(person, groupname_by_id):
     log.debug('Parsed contact %s', contact)
     return contact
 
+
 def parse_contacts(raw_contacts, groupname_by_id):
     for contact in raw_contacts:
         yield parse_contact(contact, groupname_by_id)
+
 
 def parse_groups(raw_groups):
     groupname_by_id = {}

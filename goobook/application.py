@@ -4,20 +4,21 @@
 # author: Christer Sjöholm -- hcs AT furuvik DOT net
 
 
-from pkg_resources import resource_filename
 import argparse
-import goobook.config
 import logging
-import oauth2client.client
-import oauth2client.file
-import oauth2client.tools
 import os
-import pkg_resources
 import json
 import sys
 
+import oauth2client.client
+import oauth2client.file
+import oauth2client.tools
+import pkg_resources
+from pkg_resources import resource_filename
+
+import goobook.config
 from goobook.goobook import GooBook, Cache, GoogleContacts, parse_groups, parse_contacts
-from .storage import unstorageify
+from goobook.storage import unstorageify
 
 log = logging.getLogger(__name__)
 
@@ -79,9 +80,9 @@ def main():
     parser_reload.set_defaults(func=do_reload)
 
     parser_auth = subparsers.add_parser('authenticate',
-                                          description='Google OAuth authentication.',
-                                          formatter_class=argparse.RawDescriptionHelpFormatter,
-                                          parents=[oauth2client.tools.argparser])
+                                        description='Google OAuth authentication.',
+                                        formatter_class=argparse.RawDescriptionHelpFormatter,
+                                        parents=[oauth2client.tools.argparser])
     parser_auth.set_defaults(func=do_authenticate)
 
     args = parser.parse_args()

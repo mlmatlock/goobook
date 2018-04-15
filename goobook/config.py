@@ -2,16 +2,15 @@
 # vim: fileencoding=UTF-8 filetype=python ff=unix et ts=4 sw=4 sts=4 tw=120
 # author: Christer Sjöholm -- hcs AT furuvik DOT net
 
-
-
+import os
+from os.path import realpath, expanduser
 import configparser
 import locale
 import logging
-import oauth2client.client
-import os
 
-from .storage import Storage
-from os.path import realpath, expanduser
+import oauth2client.client
+
+from goobook.storage import Storage
 
 log = logging.getLogger(__name__)
 
@@ -87,7 +86,7 @@ def _get_config(config_file):
         try:
             log.info('Reading config: %s', config_file)
             inp = open(config_file)
-            parser.readfp(inp)
+            parser.read_file(inp)
             return parser
         except (IOError, configparser.ParsingError) as err:
             raise ConfigError("Failed to read configuration %s\n%s" % (config_file, err))
