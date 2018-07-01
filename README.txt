@@ -79,22 +79,6 @@ It will look like this::
     ;default_group:
 
 
-NOTE:: The keyring support is not available at the moment but might reappear.
-
-Similarly, goobook supports authentication by keyring_. The keyring package
-supports multiple backends, depending on your
-environment. You should configure it to point to the one you're using by
-default. To use this option, set your e-mail address in the config file but
-leave the password field commented out (or blank). You need to have a password
-for the "gmail" service and your e-mail address stored in the keyring. There
-are several ways to achieve this, here is one::
-
-    $ python
-    >>> import keyring
-    >>> keyring.set_password("gmail", "me@example.com", "secret")
-
-.. _keyring: http://pypi.python.org/pypi/keyring
-
 Proxy settings
 --------------
 

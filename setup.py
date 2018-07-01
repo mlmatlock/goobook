@@ -62,7 +62,6 @@ setup(name='goobook',
           'oauth2client>=1.5.0,<5.0.0dev',
           ],
       extras_require={
-          'keychain': ['keyring>=0.2']
       },
       include_package_data=True,
       zip_safe=False,
