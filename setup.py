@@ -59,6 +59,7 @@ setup(name='goobook',
       install_requires=[
           'google-api-python-client>=1.6.4',
           'simplejson>=2.1.0',
+          'oauth2client>=1.5.0,<5.0.0dev',
           ],
       extras_require={
           'keychain': ['keyring>=0.2']
