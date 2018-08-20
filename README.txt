@@ -91,7 +91,7 @@ If you want to use goobook from mutt.
 
 Set in your .muttrc file::
 
-    set query_command="goobook query '%s'"
+    set query_command="goobook query %s"
 
 to query address book. (Normally bound to "Q" key.)
 
