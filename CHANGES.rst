@@ -8,7 +8,7 @@ CHANGES
 * Removed last traces of keyring support.
 
 1.10 2016-07-04
---------------
+---------------
 * Change required versions for oauth2client/httplib2
 * Update GooBook's manpage
 
@@ -57,7 +57,7 @@ CHANGES
 * Fixed issue 36: When the contact has no title mutt will use the extra_str as the title.
 
 1.4a5  never released
-----------------
+---------------------
 * Correctly decode encoded From headers, by Jonathan Ballet
 * Fixed IM without protocol, Issue 26
 * Fixed encoding issues on OS X, Issue 33

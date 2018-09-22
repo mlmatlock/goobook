@@ -135,4 +135,3 @@ Links, Feedback and getting involved
 - Code Repository: http://gitlab.com/goobook/goobook
 - Issue tracker: http://gitlab.com/goobook/goobook
 - Mailing list: http://groups.google.com/group/goobook
-

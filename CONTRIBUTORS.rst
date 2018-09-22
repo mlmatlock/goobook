@@ -17,7 +17,3 @@ Contributors
 * Zhihao Yuan
 
 If you think your name is missing, please add it (alpha order by first name)
-
-
-// vim: fileencoding=UTF=8 textwidth=79
-

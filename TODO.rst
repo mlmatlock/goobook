@@ -1,4 +1,6 @@
-== Things than I plan to do ==
+Things than I plan to do
+========================
+
 
 Don't sit in in front of your computer waiting for these,
 it might take a while. If you got an idea or want to give me a nudge about one
@@ -12,7 +14,9 @@ of these, please let me know. Of course patches are always welcome.
 - add: check if the email already is in the contacts, also add a force flag to bypass check.
 
 
-== Ideas ==
+Ideas
+=====
+
 
 As above, let me hear if there is something you want.
 
@@ -23,6 +27,3 @@ As above, let me hear if there is something you want.
   updating contacts. Primarily for batch processing of contacts.
 - chain search apps? A wrapper (reduce) is probably better.
 - async cache updates
-
-
-// vim fileencoding=UTF=8 syntax=asciidoc textwidth=79

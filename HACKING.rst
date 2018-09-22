@@ -11,4 +11,3 @@ To upload the generated source distribution to PyPI, run:
 
 Note that if you ignore the ``egg_info -RDb ""`` part, Distribute will generate
 a development release tarball with ``.dev``.
-
