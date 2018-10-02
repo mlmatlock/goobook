@@ -5,3 +5,5 @@ goobook.egg-info
 *.gz
 build
 dist
+.tox
+.pytest_cache

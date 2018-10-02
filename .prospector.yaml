@@ -1,0 +1,31 @@
+---
+strictness: high
+test-warnings: true
+doc-warnings: true
+member-warnings: true
+max-line-length: 120
+
+vulture:
+  run: true
+
+pyroma:
+  run: true
+
+pylint:
+  disable:
+    - missing-docstring
+
+pep8:
+  full: true
+
+pep257:
+  disable:
+    - D213
+    - D203
+    - D100 # Missing docstring in public module
+    - D101 # Missing docstring in public class
+    - D102 # Missing docstring in public method
+    - D103 # Missing docstring in public function
+    - D104 # Missing docstring in public package
+    - D105 # Missing docstring in magic method
+    - D107 # Missing docstring in __init__

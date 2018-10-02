@@ -15,10 +15,11 @@ goobook = {path = ".", editable = true}
 
 [dev-packages]
 
-"flake8" = "*"
-pylint = "*"
+prospector = "*"
 pytest = "*"
 docutils = "*"
+pyroma = "*"
+vulture = "<0.25"
 
 
 [requires]
