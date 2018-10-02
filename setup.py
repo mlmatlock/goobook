@@ -3,68 +3,45 @@
 # author: Christer Sjöholm -- goobook AT furuvik DOT net
 
 import os
+import setuptools
 
-from setuptools import setup, find_packages
-
-here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.rst')).read()
-NEWS = open(os.path.join(here, 'CHANGES.rst')).read()
-
-
-class UltraMagicString(object):
-    ''' Stolen from http://stackoverflow.com/questions/1162338/whats-the-right-way-to-use-unicode-metadata-in-setup-py
-
-    Catch-22:
-    - if I return Unicode, python setup.py --long-description as well
-      as python setup.py upload fail with a UnicodeEncodeError
-    - if I return UTF-8 string, python setup.py sdist register
-      fails with an UnicodeDecodeError
-    '''
-
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return self.value
-
-    def __unicode__(self):
-        return self.value.decode('UTF-8')
-
-    def __add__(self, other):
-        return UltraMagicString(self.value + str(other))
-
-    def split(self, *args, **kw):
-        return self.value.split(*args, **kw)
+HERE = os.path.abspath(os.path.dirname(__file__))
+README = open(os.path.join(HERE, 'README.rst')).read()
+NEWS = open(os.path.join(HERE, 'CHANGES.rst')).read()
 
 
-setup(name='goobook',
-      version='1.10',
-      description='Search your google contacts from the command-line or mutt.',
-      long_description=UltraMagicString(README + '\n\n' + NEWS),
-      maintainer=UltraMagicString('Christer Sjöholm'),
-      maintainer_email='goobook@furuvik.net',
-      url='http://gitlab.com/goobook/goobook',
-      download_url='http://pypi.python.org/pypi/goobook',
-      classifiers=[f.strip() for f in """
+setuptools.setup(
+    name='goobook',
+    version='1.10',
+    description='Search your google contacts from the command-line or mutt.',
+    long_description=README + '\n\n' + NEWS,
+    long_description_content_type="text/x-rst",
+    author='Christer Sjöholm',
+    author_email='goobook@furuvik.net',
+    url='http://gitlab.com/goobook/goobook',
+    download_url='http://pypi.python.org/pypi/goobook',
+    classifiers=[f.strip() for f in """
         Development Status :: 5 - Production/Stable
         Environment :: Console
         Operating System :: OS Independent
         Programming Language :: Python
+        Programming Language :: Python :: 3
         Programming Language :: Python :: 3.6
         Intended Audience :: End Users/Desktop
         License :: OSI Approved :: GNU General Public License (GPL)
         Topic :: Communications :: Email :: Address Book
-        """.splitlines() if f.strip()],
-      license='GPLv3',
-      install_requires=[
-          'google-api-python-client>=1.6.4',
-          'simplejson>=2.1.0',
-          'oauth2client>=1.5.0,<5.0.0dev',
-          ],
-      extras_require={
-      },
-      include_package_data=True,
-      zip_safe=False,
-      packages=find_packages(),
-      entry_points={'console_scripts': ['goobook = goobook.application:main']}
-      )
+    """.splitlines() if f.strip()],
+    keywords='abook mutt e-mail gmail google address-book',
+    license='GPLv3',
+    install_requires=[
+        'google-api-python-client>=1.6.4',
+        'simplejson>=2.1.0',
+        'oauth2client>=1.5.0,<5.0.0dev',
+    ],
+    extras_require={
+    },
+    include_package_data=True,
+    zip_safe=False,
+    packages=setuptools.find_packages(),
+    entry_points={'console_scripts': ['goobook = goobook.application:main']}
+)
