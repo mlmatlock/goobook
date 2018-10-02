@@ -34,18 +34,12 @@ import time
 
 import httplib2
 from apiclient.discovery import build
-# import gdata.service
 
 from goobook.storage import Storage, storageify, unstorageify
 
 log = logging.getLogger(__name__)
 
 CACHE_FORMAT_VERSION = '5.0'
-G_MAX_SRESULTS = 9999  # Maximum number of entries to ask google for.
-GDATA_VERSION = '3'
-ATOM_NS = '{http://www.w3.org/2005/Atom}'
-G_NS = '{http://schemas.google.com/g/2005}'
-GC_NS = '{http://schemas.google.com/contact/2008}'
 
 TypedValue = collections.namedtuple('TypedValue', ['value', 'type'])
 
@@ -161,24 +155,6 @@ class GooBook(object):
                 yield contact
 
     def add_mail_contact(self, name, mailaddr):
-        # entry = ET.Element(ATOM_NS + 'entry')
-        # ET.SubElement(entry, ATOM_NS + 'category', scheme='http://schemas.google.com/g/2005#kind',
-        #               term='http://schemas.google.com/contact/2008#contact')
-        # fullname_e = ET.Element(G_NS + 'fullName')
-        # fullname_e.text = name
-        # ET.SubElement(entry, G_NS + 'name').append(fullname_e)
-        # ET.SubElement(entry, G_NS + 'email', rel='http://schemas.google.com/g/2005#other', primary='true',
-        #               address=mailaddr)
-
-        # group_id = self.cache.get_group_by_title('System Group: My Contacts').id
-        # ET.SubElement(entry, GC_NS + 'groupMembershipInfo', deleted='false',
-        #               href=group_id)
-
-        # if self.__config.default_group:
-        #     group_id2 = self.cache.get_group_by_title(self.__config.default_group).id
-        #     ET.SubElement(entry, GC_NS + 'groupMembershipInfo', deleted='false',
-        #                   href=group_id2)
-
         contact = {
             'names': [{'displayName': name}],
             'emailAddresses': [{'value': mailaddr}],
@@ -278,18 +254,6 @@ class Cache(object):
                      'goobook_cache': CACHE_FORMAT_VERSION}
             pickle.dump(cache, open(self.__config.cache_filename, 'wb'))
 
-    # def get_group(self, id_):
-    #     for group in self.groups:
-    #         if group.id == id_:
-    #             return group
-    #     raise KeyError('Group: ' + id_)
-
-    # def get_group_by_title(self, title):
-    #     for group in self.groups:
-    #         if group.title == title:
-    #             return group
-    #     raise KeyError('Group: ' + title)
-
 
 def parse_contact(person, groupname_by_id):
     '''Extracts interesting contact info from cache.'''
@@ -299,7 +263,6 @@ def parse_contact(person, groupname_by_id):
     contact.im = []  # TODO
     contact.addresses = []  # TODO
     contact.display_name = None
-    contact.nickname = None
     contact.all_names = []
     contact.groups = []
     contact.phonenumbers = []
@@ -318,8 +281,6 @@ def parse_contact(person, groupname_by_id):
             if field in name:
                 contact.all_names.append(name[field])
 
-    # contact.nickname = contact.displayName = contact.id = contact.title = person['names'][0]['displayName']
-
     if contact.display_name is None:
         # if there is no displayName use a email address
         if contact.emails:
@@ -334,40 +295,6 @@ def parse_contact(person, groupname_by_id):
 
     for phone in person.get('phoneNumbers', []):
         contact.phonenumbers.append(TypedValue(phone['value'], phone.get('type', '')))
-
-    # # ID
-    # contact.id = entry.findtext(ATOM_NS + 'id')
-    # # title
-    # contact.title = entry.findtext(ATOM_NS + 'title')
-    # # nickname
-    # contact.nickname = entry.findtext(GC_NS + 'nickname', default='')
-    # # emails
-    # contact.emails = []
-    # for ent in entry.findall(G_NS + 'email'):
-    #     label = ent.get('label') or ent.get('rel').split('#')[-1]
-    #     contact.emails.append((ent.get('address'), label))
-    # # groups
-    # contact.groups = [e.get('href') for e in entry.findall(GC_NS + 'groupMembershipInfo') if
-    #                   e.get('deleted') == 'false']
-    # # phone
-    # contact.phonenumbers = []
-    # for ent in entry.findall(G_NS + 'phoneNumber'):
-    #     label = ent.get('label') or ent.get('rel').split('#')[-1]
-    #     contact.phonenumbers.append((ent.text, label))
-    # # birthday
-    # contact.birthday = entry.find(GC_NS + 'birthday').get('when') if entry.findall(GC_NS + 'birthday') else None
-    # # address
-    # contact.addresses = []
-    # for address in entry.findall(G_NS + 'structuredPostalAddress'):
-    #     label = address.get('label') or address.get('rel').split('#')[-1]
-    #     contact.addresses.append((address.findtext(G_NS + 'formattedAddress'), label))
-    # # IM
-    # contact.im = []
-    # for ent in entry.findall(G_NS + 'im'):
-    #     protocol = ent.get('protocol')
-    #     # Default protocol is GOOGLE_TALK
-    #     protocol = ent.get('protocol').split('#')[-1] if protocol else "GOOGLE_TALK"
-    #     contact.im.append((ent.get('address'), protocol))
 
     log.debug('Parsed contact %s', contact)
     return contact
@@ -388,7 +315,7 @@ def parse_groups(raw_groups):
 class GoogleContacts(object):
 
     def __init__(self, config):
-        self.__http_client = http_client = self.__get_client(config.creds)
+        http_client = self.__get_client(config.creds)
         self.service = build('people', 'v1', http=http_client)
         # self.__additional_headers = {
         #     'GData-Version': GDATA_VERSION,

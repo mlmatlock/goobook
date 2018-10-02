@@ -5,7 +5,6 @@
 import os
 from os.path import realpath, expanduser
 import configparser
-import locale
 import logging
 
 import oauth2client.client
@@ -13,12 +12,6 @@ import oauth2client.client
 from goobook.storage import Storage
 
 log = logging.getLogger(__name__)
-
-try:
-    ENCODING = locale.getpreferredencoding() or 'UTF-8'
-except LookupError:
-    # Some OS X can give a strange encoding
-    ENCODING = 'UTF-8'
 
 TEMPLATE = '''\
 # "#" or ";" at the start of a line makes it a comment.
@@ -71,9 +64,6 @@ def read_config(config_file):
 
     config.store = oauth2client.file.Storage(config.oauth_db_filename)
     config.creds = config.store.get()
-
-    # What terminal encoding to use
-    config.encoding = ENCODING
 
     log.debug(config)
     return config
