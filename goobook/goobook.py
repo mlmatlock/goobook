@@ -135,7 +135,7 @@ class GooBook(object):
                 print >> out, "\t" + groups_str
 
     def __query_contacts(self, query):
-        match = re.compile(query, re.I).search  # create a match function
+        match = re.compile(query.replace(' ', '.*'), re.I).search  # create a match function
         for contact in self.cache.contacts:
             if self.__config.filter_groupless_contacts and not contact.groups:
                 continue  # Skip contacts without groups
@@ -150,7 +150,7 @@ class GooBook(object):
                     yield contact
 
     def __query_groups(self, query):
-        match = re.compile(query, re.I).search  # create a match function
+        match = re.compile(query.replace(' ', '.*'), re.I).search  # create a match function
         for group in self.cache.groups:
             # Collect all values to match against
             all_values = (group.title,)
