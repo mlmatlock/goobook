@@ -1,5 +1,8 @@
 #!/bin/sh
-#exec flake8 --max-line-length=120 goobook
-#exec pipenv run prospector --with-tool pyroma --with-tool vulture "$@"
-exec pipenv run prospector "$@"
 
+# Run static code analyis
+# You need to have done: pipenv install --dev
+
+# prospector is configured in .prospector.yaml
+
+exec pipenv run prospector "$@"
