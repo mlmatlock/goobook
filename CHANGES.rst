@@ -6,6 +6,7 @@ CHANGES
 * Supports Python 3 but not 2.
 * dump_* format changed from xml to json because of change of google library.
 * Removed last traces of keyring support.
+* Implement support for fuzzy finding contacts and groups by Matteo Landi
 
 1.10 2016-07-04
 ---------------

@@ -7,6 +7,7 @@ Contributors
 * Christer Sjöholm
 * Dariusz Dwornikowski
 * Marcus Nitzschke
+* Matteo Landi
 * Samir Benmendil
 * T.V. Raman
 * Tycho Andersen
