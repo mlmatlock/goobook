@@ -5,6 +5,10 @@ doc-warnings: true
 member-warnings: true
 max-line-length: 120
 
+ignore-paths:
+  - build
+  - goobook/storage.py  # TODO rm
+
 vulture:
   run: true
 

@@ -18,10 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-'''\
-The idea is make an interface to google contacts that mimics the behaviour of
-abook for mutt.
-'''
+"""The idea is make an interface to google contacts that mimics the behaviour of abook for mutt."""
 import collections
 import email.parser
 import email.header
@@ -37,25 +34,27 @@ from apiclient.discovery import build
 
 from goobook.storage import Storage, storageify, unstorageify
 
-log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 CACHE_FORMAT_VERSION = '5.0'
 
 TypedValue = collections.namedtuple('TypedValue', ['value', 'type'])
 
 
-class GooBook(object):
-    '''This class can't be used as a library as it looks now, it uses sys.stdin
-       print and sys.exit().'''
+class GooBook():
+    """Application logic
+
+    This class can't be used as a library as it looks now, it uses sys.stdin
+    print and sys.exit().
+    """
+
     def __init__(self, config):
         self.__config = config
         self.cache = Cache(config)
         self.cache.load()
 
     def query(self, query):
-        """Do the query, and print it out in
-
-        """
+        """Do the query, and print it out in"""
         # query contacts
         matching_contacts = sorted(self.__query_contacts(query), key=lambda c: c.display_name)
         # query groups
@@ -82,11 +81,7 @@ class GooBook(object):
             print('%s\t%s (group)' % (emails, group.title))
 
     def query_details(self, query):
-        """
-        Method for querying the contacts and printing
-        a detailed view.
-        """
-
+        """Method for querying the contacts and printing a detailed view."""
         out = sys.stdout
 
         # query contacts
@@ -167,13 +162,13 @@ class GooBook(object):
 
     def add_email_from(self, lines):
         """Add an address from From: field of a mail.
+
         This assumes a single mail file is supplied through.
 
         Args:
           lines: A generator of lines, usually a open file.
 
         """
-
         parser = email.parser.HeaderParser()
         headers = parser.parse(lines)
         if 'From' not in headers:
@@ -199,15 +194,14 @@ class GooBook(object):
         self.add_mail_contact(name, mailaddr)
 
 
-class Cache(object):
+class Cache():
     def __init__(self, config):
         self.__config = config
         self.contacts = None  # list of Storage
         self.groups = None  # list of Storage
 
     def load(self, force_update=False):
-        """Load the cached addressbook feed, or fetch it (again) if it is
-        old or missing or invalid or anyting
+        """Load the cached addressbook feed, or fetch it (again) if it is old or missing or invalid or anything
 
         Args:
           force_update: force update of cache
@@ -220,7 +214,7 @@ class Cache(object):
                                  ((time.time() - os.path.getmtime(self.__config.cache_filename)) <
                                   (int(self.__config.cache_expiry_hours) * 60 * 60))):
             try:
-                log.debug('Loading cache: ' + self.__config.cache_filename)
+                log.debug('Loading cache: %s', self.__config.cache_filename)
                 cache = pickle.load(open(self.__config.cache_filename, 'rb'))
                 if cache.get('goobook_cache') != CACHE_FORMAT_VERSION:
                     log.info('Detected old cache format')
@@ -238,16 +232,14 @@ class Cache(object):
 
     def update(self):
         log.info('Retrieving contact data from Google.')
-        gc = GoogleContacts(self.__config)
-        groupname_by_id = parse_groups(gc.fetch_contact_groups())
-        self.contacts = list(parse_contacts(gc.fetch_contacts(), groupname_by_id))
+        gcs = GoogleContacts(self.__config)
+        groupname_by_id = parse_groups(gcs.fetch_contact_groups())
+        self.contacts = list(parse_contacts(gcs.fetch_contacts(), groupname_by_id))
         self.groups = list(groupname_by_id.values())
         self.save()
 
     def save(self):
-        """Pickle the addressbook and a timestamp
-
-        """
+        """Pickle the addressbook and a timestamp"""
         if self.contacts:  # never write a empty addressbook
             cache = {'contacts': unstorageify(self.contacts),
                      'groups': unstorageify(self.groups),
@@ -256,7 +248,7 @@ class Cache(object):
 
 
 def parse_contact(person, groupname_by_id):
-    '''Extracts interesting contact info from cache.'''
+    """Extracts interesting contact info from cache."""
     contact = Storage()
     contact.emails = []
     contact.birthday = []  # TODO
@@ -312,7 +304,7 @@ def parse_groups(raw_groups):
     return groupname_by_id
 
 
-class GoogleContacts(object):
+class GoogleContacts():
 
     def __init__(self, config):
         http_client = self.__get_client(config.creds)
@@ -322,39 +314,13 @@ class GoogleContacts(object):
         #     'Content-Type': 'application/atom+xml'
         # }
 
-    def __get_client(self, credentials):
-        '''Login to Google and return a ContactsClient object.
-
-        '''
+    @staticmethod
+    def __get_client(credentials):
+        """Login to Google and return a ContactsClient object."""
         if not credentials or credentials.invalid:
             sys.exit('No or invalid credentials, run "goobook authenticate"')  # TODO raise exception instead
         http_auth = credentials.authorize(httplib2.Http())
         return http_auth
-
-    # def _get(self, query):
-    #     resp_headers, content = self.__http_client.request(str(query),
-    #                                                        'GET',
-    #                                                        headers=self.__additional_headers,
-    #                                                        connection_type=httplib2.HTTPSConnectionWithTimeout)
-    #     log.debug('GET returned: %s', resp_headers)
-    #     if resp_headers['status'] != '200':
-    #         raise Exception('Failed headers: {} content: {}'.format(resp_headers, content))
-    #     res = ET.fromstring(content)
-    #     return res
-
-    # def _post(self, data, query):
-    #     '''data is a ElementTree'''
-    #     data = ET.tostring(data)
-    #     log.debug('POSTing to: %s\n%s', query, data)
-    #     resp_headers, content = self.__http_client.request(str(query),
-    #                                                        'POST',
-    #                                                        data,
-    #                                                        headers=self.__additional_headers,
-    #                                                        connection_type=httplib2.HTTPSConnectionWithTimeout)
-    #     if resp_headers['status'] != '201':
-    #         raise Exception('Failed headers: {} content: {}'.format(resp_headers, content))
-    #     log.debug('POST returned: %s', resp_headers)
-    #     # res = self.__client.Post(data, str(query), converter=str)
 
     def fetch_contacts(self):
         connections = []

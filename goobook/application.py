@@ -20,7 +20,7 @@ import goobook.config
 from goobook.goobook import GooBook, Cache, GoogleContacts, parse_groups, parse_contacts
 from goobook.storage import unstorageify
 
-log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 CONFIG_FILE = '~/.goobookrc'
 SCOPES = 'https://www.google.com/m8/feeds'  # read/write access to Contacts and Contact Groups
@@ -93,7 +93,7 @@ def main():
         parser.error('To few arguments.')
 
     try:
-        if args.func == do_config_template:
+        if args.func is do_config_template:
             config = None
         else:
             config = goobook.config.read_config(args.config)
@@ -113,7 +113,7 @@ def do_add(config, args):
         goobk.add_email_from(sys.stdin)
 
 
-def do_config_template(config, args):
+def do_config_template(_config, _args):
     print(goobook.config.TEMPLATE)
 
 
@@ -147,7 +147,7 @@ def do_query_details(config, args):
     goobk.query_details(args.query)
 
 
-def do_reload(config, args):
+def do_reload(config, _args):
     cache = Cache(config)
     cache.load(force_update=True)
 

@@ -11,7 +11,7 @@ import oauth2client.client
 
 from goobook.storage import Storage
 
-log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 TEMPLATE = '''\
 # "#" or ";" at the start of a line makes it a comment.
@@ -38,10 +38,11 @@ TEMPLATE = '''\
 
 
 def read_config(config_file):
-    '''Reads the ~/.goobookrc and any authentication data
+    """Reads the ~/.goobookrc and any authentication data
+
     returns the configuration as a dictionary.
 
-    '''
+    """
     config = Storage({  # Default values
         'cache_filename': '~/.goobook_cache',
         'oauth_db_filename': '~/.goobook_auth.json',
@@ -70,7 +71,7 @@ def read_config(config_file):
 
 
 def _get_config(config_file):
-    '''find, read and parse configuraton.'''
+    """find, read and parse configuraton."""
     parser = configparser.SafeConfigParser()
     if os.path.lexists(config_file):
         try:
