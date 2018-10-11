@@ -3,6 +3,7 @@ GooBook -- Access your Google contacts from the command line.
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 .. contents:: **Table of Contents**
+   :depth: 1
 
 About
 =====
@@ -24,10 +25,10 @@ There is a number of ways to install Python software.
 Which version to use
 --------------------
 
-If you only have Python 2.7 you need to use GooBook 2.x.
+If you only have Python 2.7 you need to use GooBook 1.x.
 If you have Python 3.6+ you need to use GooBook 3.x.
 
-There will be no further feature releases in the 2.x series.
+There will be no further feature releases in the 1.x series.
 
 pip
 ---
@@ -72,8 +73,8 @@ Download the source tarball, uncompress it, then run the install command::
     $ sudo python ./setup.py install
 
 
-Configure
-=========
+Configuration
+=============
 
 For most users it will be enough to to run::
 
