@@ -21,8 +21,16 @@ There is a number of ways to install Python software.
 - Using source directly from gitorius
 - From a distribution specific repository
 
-pip or easy_install
--------------------
+Which version to use
+--------------------
+
+If you only have Python 2.7 you need to use GooBook 2.x.
+If you have Python 3.6+ you need to use GooBook 3.x.
+
+There will be no further feature releases in the 2.x series.
+
+pip
+---
 
 This is the recommended way to install goobook for most users that
 don't have it available in their distribution.
@@ -30,16 +38,39 @@ When installing this way you will not need to download anything manually.
 
 Install like this::
 
-    $ pip install goobook
+    $ pip install --user goobook
 
-Source installation
--------------------
+This will install goobook as ~/.local/bin/goobook (In a UNIX environment).
+
+
+Pipenv
+------
+
+This is the recommended way if you want to run from a git checkout.
+Install pipenv if you don't have it, https://pipenv.readthedocs.io.
+
+clone the git repos, cd into in, and run::
+
+    $ pipenv install
+
+Goobook is now installed in a virtualenv created by pipenv.
+you can test pipenv by running::
+
+    $ pipenv run goobook
+
+To locate the virtualenv where goobook is installed::
+
+    $ pipenv --venv
+
+Source installation from tarball
+--------------------------------
 
 Download the source tarball, uncompress it, then run the install command::
 
     $ tar -xzvf goobook-*.tar.gz
     $ cd goobook-*
     $ sudo python ./setup.py install
+
 
 Configure
 =========
@@ -131,7 +162,7 @@ and::
 Links, Feedback and getting involved
 ====================================
 
-- PyPI home: http://pypi.python.org/pypi/goobook
+- PyPI home: https://pypi.org/project/goobook/
 - Code Repository: http://gitlab.com/goobook/goobook
-- Issue tracker: http://gitlab.com/goobook/goobook
+- Issue tracker: https://gitlab.com/goobook/goobook/issues
 - Mailing list: http://groups.google.com/group/goobook
