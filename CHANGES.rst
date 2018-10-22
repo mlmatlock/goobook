@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+3.0.1 2018-10-22
+----------------
+
+* Fixed MANIFEST so rst files is included in src bundles.
+
 3.0.0 2018-10-17
 -----------------
 * Supports Python 3.6 but not 2.x.
