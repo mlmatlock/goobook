@@ -278,7 +278,8 @@ def parse_contact(person, groupname_by_id):
         if contact.emails:
             contact.display_name = contact.emails[0].value
         else:
-            return None  # No name and no email...
+            log.info('Skipping contact because of no name and no email: %s', person)
+            return None
 
     for membership in person.get('memberships', []):
         if "contactGroupMembership" in membership:
@@ -294,7 +295,9 @@ def parse_contact(person, groupname_by_id):
 
 def parse_contacts(raw_contacts, groupname_by_id):
     for contact in raw_contacts:
-        yield parse_contact(contact, groupname_by_id)
+        parsed = parse_contact(contact, groupname_by_id)
+        if parsed:
+            yield parsed
 
 
 def parse_groups(raw_groups):
