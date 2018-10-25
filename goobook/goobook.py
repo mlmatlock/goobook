@@ -86,11 +86,14 @@ class GooBook():
         out = sys.stdout
 
         # query contacts
-        matching_contacts = sorted(self.__query_contacts(query), key=lambda c: c.display_name)
+        matching_contacts = list(self.__query_contacts(query))
         # query groups
-        matching_groups = sorted(self.__query_groups(query), key=lambda g: g[0])
-        for group in matching_groups:
-            matching_contacts += group[1]
+        for group in self.__query_groups(query):
+            for contact in group[1]:
+                if contact not in matching_contacts:
+                    matching_contacts.append(contact)
+
+        matching_contacts = sorted(matching_contacts, key=lambda c: c.display_name)
 
         for contact in matching_contacts:
             print("-------------------------", file=out)
