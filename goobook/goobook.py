@@ -367,4 +367,4 @@ class GoogleContacts():
         return groups
 
     def create_contact(self, contact):
-        self.service.people().createContact(contact).execute()
+        self.service.people().createContact(body=contact).execute()
