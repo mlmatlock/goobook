@@ -58,7 +58,7 @@ class GooBook():
         # query contacts
         matching_contacts = sorted(self.__query_contacts(query), key=lambda c: c.display_name)
         # query groups
-        matching_groups = sorted(self.__query_groups(query), key=lambda g: g.display_name)
+        matching_groups = sorted(self.__query_groups(query), key=lambda g: g[0])
         # mutt's query_command expects the first line to be a message,
         # which it discards.
         print('')
@@ -73,12 +73,12 @@ class GooBook():
                     if groups_str:
                         extra_str = extra_str + ' groups: ' + groups_str
                     print('\t'.join((emailaddr, contact.display_name, extra_str)))
-        for group in matching_groups:
-            emails = ['%s <%s>' % (c.display_name, c.emails[0][0]) for c in group.contacts if c.emails]
+        for title, contacts in matching_groups:
+            emails = ['%s <%s>' % (c.display_name, c.emails[0][0]) for c in contacts if c.emails]
             emails = ', '.join(emails)
             if not emails:
                 continue
-            print('%s\t%s (group)' % (emails, group.title))
+            print('%s\t%s (group)' % (emails, title))
 
     def query_details(self, query):
         """Method for querying the contacts and printing a detailed view."""
@@ -141,8 +141,8 @@ class GooBook():
             # Collect all values to match against
             all_values = (group,)
             if any(map(match, all_values)):
-                group.contacts = list(self.__get_group_contacts(group))
-                yield group
+                contacts = list(self.__get_group_contacts(group))
+                yield group, contacts
 
     def __get_group_contacts(self, group):
         for contact in self.cache.contacts:
