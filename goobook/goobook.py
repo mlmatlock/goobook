@@ -88,9 +88,9 @@ class GooBook():
         # query contacts
         matching_contacts = sorted(self.__query_contacts(query), key=lambda c: c.display_name)
         # query groups
-        matching_groups = sorted(self.__query_groups(query), key=lambda g: g.display_name)
+        matching_groups = sorted(self.__query_groups(query), key=lambda g: g[0])
         for group in matching_groups:
-            matching_contacts += group.contacts
+            matching_contacts += group[1]
 
         for contact in matching_contacts:
             print("-------------------------", file=out)
