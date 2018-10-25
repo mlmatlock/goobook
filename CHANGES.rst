@@ -1,6 +1,15 @@
 CHANGES
 =======
 
+3.0.2 2018-10-25
+----------------
+
+* dquery now prints birthday
+* Issue 59: Auto reload after add
+* Fixed searching for contact groups
+* Issue 77: Fixed add command
+* Don't populate the cache with _invalid_ contacts by Matteo Landi
+
 3.0.1 2018-10-22
 ----------------
 
