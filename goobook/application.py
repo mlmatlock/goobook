@@ -111,6 +111,7 @@ def do_add(config, args):
         goobk.add_mail_contact(args.name, args.email)
     else:
         goobk.add_email_from(sys.stdin)
+    goobk.cache.load(force_update=True)
 
 
 def do_config_template(_config, _args):
