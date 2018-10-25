@@ -95,8 +95,15 @@ class GooBook():
         for contact in matching_contacts:
             print("-------------------------", file=out)
             print(contact.display_name, file=out)
+            for org in contact.organizations:
+                if org.name:
+                    print("Organization: ", org.name, file=out)
+                if org.department:
+                    print("Department:   ", org.department, file=out)
+                if org.title:
+                    print("Title:        ", org.title, file=out)
             if contact.birthday:
-                print("Birthday: ", contact.birthday.strftime("%x"), file=out)
+                print("Birthday:     ", contact.birthday.strftime("%x"), file=out)
             if contact.phonenumbers:
                 print("Phone:", file=out)
                 for (number, kind) in contact.phonenumbers:
@@ -130,11 +137,17 @@ class GooBook():
                 continue  # Skip contacts without groups
             if any(map(match, list(contact.all_names) + [str(number) for (number, kind) in contact.phonenumbers])):
                 yield contact
-            else:
-                matching_addrs = [(email, kind) for (email, kind) in contact.emails if match(email)]
-                if matching_addrs:
-                    contact.emails = matching_addrs  # only show matching
-                    yield contact
+                continue
+            matching_addrs = [(email, kind) for (email, kind) in contact.emails if match(email)]
+            if matching_addrs:
+                contact.emails = matching_addrs  # only show matching
+                yield contact
+                continue
+            for org in contact.organizations:
+                for field in ('name', 'title', 'department'):
+                    if org[field] and match(org[field]):
+                        yield contact
+                        continue
 
     def __query_groups(self, query):
         match = re.compile(query.replace(' ', '.*'), re.I).search  # create a match function
@@ -258,7 +271,8 @@ def parse_contact(person, groupname_by_id):
     contact.display_name = None
     contact.all_names = []
     contact.groups = []
-    contact.phonenumbers = []
+    contact.phonenumbers = []  # [TypedValue]
+    contact.organizations = []  # [Storage()]
 
     for emaila in person.get('emailAddresses', []):
         contact.emails.append(TypedValue(emaila['value'], emaila.get('type', '')))
@@ -295,6 +309,11 @@ def parse_contact(person, groupname_by_id):
     for phone in person.get('phoneNumbers', []):
         contact.phonenumbers.append(TypedValue(phone['value'], phone.get('type', '')))
 
+    if 'organizations' in person.keys() and person['organizations']:
+        for org in person['organizations']:
+            contact.organizations.append(Storage(name=org.get('name'),
+                                                 title=org.get('title'),
+                                                 department=org.get('department')))
     log.debug('Parsed contact %s', contact)
     return contact
 
@@ -339,7 +358,7 @@ class GoogleContacts():
             x__xgafv=None,
             pageToken=None,
             sortOrder=None,
-            personFields='names,nicknames,emailAddresses,memberships,phoneNumbers,birthdays,imClients',
+            personFields='names,nicknames,emailAddresses,memberships,phoneNumbers,birthdays,imClients,organizations',
             requestSyncToken=None,
             syncToken=None,
             requestMask_includeField=None)
