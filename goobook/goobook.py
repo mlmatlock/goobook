@@ -20,6 +20,7 @@
 
 """The idea is make an interface to google contacts that mimics the behaviour of abook for mutt."""
 import collections
+import datetime
 import email.parser
 import email.header
 import logging
@@ -36,7 +37,7 @@ from goobook.storage import Storage, storageify, unstorageify
 
 log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
-CACHE_FORMAT_VERSION = '5.0'
+CACHE_FORMAT_VERSION = '5.1'
 
 TypedValue = collections.namedtuple('TypedValue', ['value', 'type'])
 
@@ -95,7 +96,7 @@ class GooBook():
             print("-------------------------", file=out)
             print(contact.display_name, file=out)
             if contact.birthday:
-                print("Birthday: ", contact.birthday, file=out)
+                print("Birthday: ", contact.birthday.strftime("%x"), file=out)
             if contact.phonenumbers:
                 print("Phone:", file=out)
                 for (number, kind) in contact.phonenumbers:
@@ -251,7 +252,7 @@ def parse_contact(person, groupname_by_id):
     """Extracts interesting contact info from cache."""
     contact = Storage()
     contact.emails = []
-    contact.birthday = []  # TODO
+    contact.birthday = None  # datetime.date
     contact.im = []  # TODO
     contact.addresses = []  # TODO
     contact.display_name = None
@@ -261,6 +262,11 @@ def parse_contact(person, groupname_by_id):
 
     for emaila in person.get('emailAddresses', []):
         contact.emails.append(TypedValue(emaila['value'], emaila.get('type', '')))
+
+    if 'birthdays' in person.keys() and person['birthdays']:
+        birthday = person['birthdays'][0]['date']
+        if len(birthday) == 3:  # we skip incomplete birthdates
+            contact.birthday = datetime.date(birthday['year'], birthday['month'], birthday['day'])
 
     for name in person.get('names', []):
         if 'displayName' in name and contact.display_name is None:

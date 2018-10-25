@@ -5,6 +5,7 @@
 
 
 import argparse
+import locale
 import logging
 import os
 import json
@@ -27,6 +28,8 @@ SCOPES = 'https://www.google.com/m8/feeds'  # read/write access to Contacts and 
 
 
 def main():
+    locale.setlocale(locale.LC_TIME, '')  # Use system configured locale
+
     parser = argparse.ArgumentParser(description='Search you Google contacts from mutt or the command-line.')
     parser.add_argument('-c', '--config', help='Specify alternative configuration file.', metavar="FILE")
     parser.add_argument('-v', '--verbose', dest="log_level", action='store_const',
