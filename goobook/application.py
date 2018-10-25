@@ -5,6 +5,7 @@
 
 
 import argparse
+import datetime
 import locale
 import logging
 import os
@@ -128,7 +129,13 @@ def do_dump_contacts(config, args):
         groupname_by_id = parse_groups(goco.fetch_contact_groups())
         contacts = unstorageify(list(parse_contacts(goco.fetch_contacts(), groupname_by_id)))
 
-    print(json.dumps(contacts, sort_keys=True, indent=4, ensure_ascii=False))
+    class DateEncoder(json.JSONEncoder):
+        def default(self, obj):
+            if isinstance(obj, datetime.date):
+                return str(obj)
+            # Let the base class default method raise the TypeError
+            return json.JSONEncoder.default(self, obj)
+    print(json.dumps(contacts, sort_keys=True, indent=4, ensure_ascii=False, cls=DateEncoder))
 
 
 def do_dump_groups(config, args):
