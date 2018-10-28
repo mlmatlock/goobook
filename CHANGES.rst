@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+3.1 2018-10-28
+--------------
+* dquery now prints each match only once.
+* Fixed "goobook dump_contacts -p"
+* Fixed dquery display of contacts with groups
+* Issue 73: add organization/job fields
+
 3.0.2 2018-10-25
 ----------------
 
