@@ -51,28 +51,30 @@ COMMAND
 -------
 
 authenticate
-  allow goobook to access your Google contacts using OAuth2
+  Allow goobook to access your Google contacts using OAuth2.
 
 add
-  read an email address from stdin and add the From: address to your Google contacts
+  Read an email address from stdin and add the From: address to your Google contacts.
 
 config-template
-  create a config template of **~/.goobookrc**
+  Create a config template of **~/.goobookrc**.
 
 dump_contacts
-  dump all your contacts to XML (stdout)
+  dump all your contacts to XML (stdout).
 
 dump_groups
-  dump your contact groups to XML (stdout)
+  dump your contact groups to XML (stdout).
 
 dquery QUERY_STRING
-  search contacts for QUERY_STRING, nice vcard like output
+  Search contacts for QUERY_STRING, nice vcard like output.
+  QUERY_STRING is a Python flavoured regexp where all ' ' is replaced with .*.
 
 query QUERY_STRING
-  search contacts for QUERY_STRING, plain text output
+  Search contacts for QUERY_STRING, plain text output.
+  QUERY_STRING is a Python flavoured regexp where all ' ' is replaced with .*.
 
 reload
-  reload contacts from Google and update cache
+  Reload contacts from Google and update cache.
 
 
 CONFIGURATION
