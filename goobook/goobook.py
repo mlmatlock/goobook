@@ -54,15 +54,23 @@ class GooBook():
         self.cache = Cache(config)
         self.cache.load()
 
-    def query(self, query):
-        """Do the query, and print it out in"""
+    def query(self, query, simple=False):
+        """Do the query, and print it out in
+
+        simple=False is the mutt format
+        simple format is:
+          "Name <email>"
+        simple format for group matches is a , separated list of Name <email>
+        the group name is not printed using simple format.
+        """
         # query contacts
         matching_contacts = sorted(self.__query_contacts(query), key=lambda c: c.display_name)
         # query groups
         matching_groups = sorted(self.__query_groups(query), key=lambda g: g[0])
-        # mutt's query_command expects the first line to be a message,
-        # which it discards.
-        print('')
+        if not simple:
+            # mutt's query_command expects the first line to be a message,
+            # which it discards.
+            print('')
         for contact in matching_contacts:
             if contact.emails:
                 emailaddrs = sorted(contact.emails)
@@ -73,13 +81,20 @@ class GooBook():
                     extra_str = kind
                     if groups_str:
                         extra_str = extra_str + ' groups: ' + groups_str
-                    print('\t'.join((emailaddr, contact.display_name, extra_str)))
+                    if simple:
+                        print(f"{contact.display_name} <{emailaddr}>")
+                    else:
+                        print('\t'.join((emailaddr, contact.display_name, extra_str)))
+
         for title, contacts in matching_groups:
             emails = ['%s <%s>' % (c.display_name, c.emails[0][0]) for c in contacts if c.emails]
             emails = ', '.join(emails)
             if not emails:
                 continue
-            print('%s\t%s (group)' % (emails, title))
+            if simple:
+                print(emails)
+            else:
+                print('%s\t%s (group)' % (emails, title))
 
     def query_details(self, query):
         """Method for querying the contacts and printing a detailed view."""

@@ -69,8 +69,9 @@ dquery QUERY_STRING
   Search contacts for QUERY_STRING, nice vcard like output.
   QUERY_STRING is a Python flavoured regexp where all ' ' is replaced with .*.
 
-query QUERY_STRING
-  Search contacts for QUERY_STRING, plain text output.
+query [-s|--simple] QUERY_STRING
+  Search contacts for QUERY_STRING, mutt compatible plain text output.
+  --simple output format was requested for use with notmuchmail.
   QUERY_STRING is a Python flavoured regexp where all ' ' is replaced with .*.
 
 reload

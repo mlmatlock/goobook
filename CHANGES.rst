@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+3.x
+---
+
+* Issue 17: Feature request: simple query output format to ease goobook use with notmuch
+* dquery: Don't print header if there is no groups.
+* Issue 69: Added note about regexps to man page.
+
 3.1 2018-10-28
 --------------
 * dquery now prints each match only once.

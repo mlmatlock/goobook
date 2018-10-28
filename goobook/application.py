@@ -70,6 +70,8 @@ def main():
 
     parser_query = subparsers.add_parser('query',
                                          description='Search contacts using query (regex).')
+    parser_query.add_argument('-s', '--simple', action='store_true',
+                                    help='Simple output format instead of mutt compatible')
     parser_query.add_argument('query', help='regex to search for.', metavar='QUERY')
     parser_query.set_defaults(func=do_query)
 
@@ -150,7 +152,7 @@ def do_dump_groups(config, args):
 
 def do_query(config, args):
     goobk = GooBook(config)
-    goobk.query(args.query)
+    goobk.query(args.query, simple=args.simple)
 
 
 def do_query_details(config, args):
