@@ -14,7 +14,10 @@ from goobook.storage import Storage
 log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 TEMPLATE = '''\
+# Use this template to create your ~/.goobookrc
+
 # "#" or ";" at the start of a line makes it a comment.
+
 [DEFAULT]
 # The following are optional, defaults are shown
 
