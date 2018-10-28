@@ -126,10 +126,9 @@ class GooBook():
                     lines = address.splitlines()
                     lines[0] = '%s ( %s )' % (lines[0], kind)
                     print("\t" + '\n\t'.join(lines), file=out)
-            if contact.groups:
+            groups = set(contact.groups).difference(('My Contacts',))
+            if groups:
                 print("Groups:", file=out)
-                groups = set(contact.groups)
-                groups = groups.difference(('My Contacts',))
                 groups_str = '\n\t'.join(groups)
                 print("\t" + groups_str, file=out)
 
