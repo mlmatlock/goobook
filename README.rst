@@ -97,7 +97,8 @@ It will look like this::
     # it's like a password to your google contacts.
     ;oauth_db_filename: ~/.goobook_auth.json
 
-    # The client secret file is not really secret.
+    # The client secret file is not really secret,
+    # usually the bundled default secret is used.
     ;client_secret_filename: ~/.goobook_client_secret.json
 
     ;cache_filename: ~/.goobook_cache
