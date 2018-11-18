@@ -294,7 +294,7 @@ def parse_contact(person, groupname_by_id):
     for emaila in person.get('emailAddresses', []):
         contact.emails.append(TypedValue(emaila['value'], emaila.get('type', '')))
 
-    if 'birthdays' in person.keys() and person['birthdays']:
+    if 'birthdays' in person.keys() and person['birthdays'] and 'date' in person['birthdays'][0]:
         birthday = person['birthdays'][0]['date']
         if len(birthday) == 3:  # we skip incomplete birthdates
             contact.birthday = datetime.date(birthday['year'], birthday['month'], birthday['day'])
