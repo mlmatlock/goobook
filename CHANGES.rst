@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+
+NEXT
+--------------
+
+* Issue 73 (reopened): Accept org name as display_name
+
+
 3.2 2018-11-18
 --------------
 
