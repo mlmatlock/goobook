@@ -310,13 +310,9 @@ def parse_contact(person, groupname_by_id):
             if field in name:
                 contact.all_names.append(name[field])
 
-    if contact.display_name is None:
+    if contact.display_name is None and contact.emails:
         # if there is no displayName use a email address
-        if contact.emails:
-            contact.display_name = contact.emails[0].value
-        else:
-            log.info('Skipping contact because of no name and no email: %s', person)
-            return None
+        contact.display_name = contact.emails[0].value
 
     for membership in person.get('memberships', []):
         if "contactGroupMembership" in membership:
@@ -328,10 +324,15 @@ def parse_contact(person, groupname_by_id):
 
     if 'organizations' in person.keys() and person['organizations']:
         for org in person['organizations']:
+            if not contact.display_name:
+                contact.display_name = org.get('name')
             contact.organizations.append(Storage(name=org.get('name'),
                                                  title=org.get('title'),
                                                  department=org.get('department')))
     log.debug('Parsed contact %s', contact)
+    if not contact.display_name:
+        log.info('Skipping contact because of no name/e-mail/organization: %s', person)
+        return None
     return contact
 
 
