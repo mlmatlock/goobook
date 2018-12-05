@@ -6,7 +6,8 @@ NEXT
 --------------
 
 * Issue 73 (reopened): Accept org name as display_name
-* Issue 80: Implement street addresses (again).
+* Issue 80: Implemented street addresses for dquery (again).
+* Reimplemented IM contact support for dquery
 
 
 3.2 2018-11-18

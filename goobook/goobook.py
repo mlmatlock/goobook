@@ -283,7 +283,7 @@ def parse_contact(person, groupname_by_id):
     contact = Storage()
     contact.emails = []
     contact.birthday = None  # datetime.date
-    contact.im = []  # TODO
+    contact.im = []
     contact.addresses = []
     contact.display_name = None
     contact.all_names = []
@@ -325,6 +325,10 @@ def parse_contact(person, groupname_by_id):
     for address in person.get('addresses', []):
         if 'formattedValue' in address:
             contact.addresses.append(TypedValue(address['formattedValue'], address.get('type', '')))
+
+    for item in person.get('imClients', []):
+        if 'username' in item:
+            contact.im.append(TypedValue(item['username'], item.get('protocol', '')))
 
     if 'organizations' in person.keys() and person['organizations']:
         for org in person['organizations']:
