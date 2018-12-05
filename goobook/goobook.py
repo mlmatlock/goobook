@@ -284,7 +284,7 @@ def parse_contact(person, groupname_by_id):
     contact.emails = []
     contact.birthday = None  # datetime.date
     contact.im = []  # TODO
-    contact.addresses = []  # TODO
+    contact.addresses = []
     contact.display_name = None
     contact.all_names = []
     contact.groups = []
@@ -321,6 +321,10 @@ def parse_contact(person, groupname_by_id):
 
     for phone in person.get('phoneNumbers', []):
         contact.phonenumbers.append(TypedValue(phone['value'], phone.get('type', '')))
+
+    for address in person.get('addresses', []):
+        if 'formattedValue' in address:
+            contact.addresses.append(TypedValue(address['formattedValue'], address.get('type', '')))
 
     if 'organizations' in person.keys() and person['organizations']:
         for org in person['organizations']:
@@ -376,7 +380,7 @@ class GoogleContacts():
             x__xgafv=None,
             pageToken=None,
             sortOrder=None,
-            personFields='names,nicknames,emailAddresses,memberships,phoneNumbers,birthdays,imClients,organizations',
+            personFields='names,nicknames,emailAddresses,memberships,phoneNumbers,birthdays,imClients,organizations,addresses',
             requestSyncToken=None,
             syncToken=None,
             requestMask_includeField=None)

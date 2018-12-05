@@ -6,6 +6,7 @@ NEXT
 --------------
 
 * Issue 73 (reopened): Accept org name as display_name
+* Issue 80: Implement street addresses (again).
 
 
 3.2 2018-11-18
