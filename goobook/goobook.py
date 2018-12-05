@@ -279,7 +279,10 @@ class Cache():
 
 
 def parse_contact(person, groupname_by_id):
-    """Extracts interesting contact info from cache."""
+    """Extracts interesting contact info from cache.
+
+    https://developers.google.com/people/api/rest/v1/people
+    """
     contact = Storage()
     contact.emails = []
     contact.birthday = None  # datetime.date
