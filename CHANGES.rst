@@ -1,18 +1,14 @@
 CHANGES
 =======
 
-
-NEXT
+3.3 2018-12-14
 --------------
-
 * Issue 73 (reopened): Accept org name as display_name
 * Issue 80: Implemented street addresses for dquery (again).
 * Reimplemented IM contact support for dquery
 
-
 3.2 2018-11-18
 --------------
-
 * Issue 17: Feature request: simple query output format to ease goobook use with notmuch
 * dquery: Don't print header if there is no groups.
 * Issue 69: Added note about regexps to man page.
@@ -27,7 +23,6 @@ NEXT
 
 3.0.2 2018-10-25
 ----------------
-
 * dquery now prints birthday
 * Issue 59: Auto reload after add
 * Fixed searching for contact groups
@@ -36,7 +31,6 @@ NEXT
 
 3.0.1 2018-10-22
 ----------------
-
 * Fixed MANIFEST so rst files is included in src bundles.
 
 3.0.0 2018-10-17
@@ -64,7 +58,6 @@ Note, 2.x was never released.
 
 1.7 2015-06-02
 --------------
-
 * Google no longer support ClientLogin (simple username/password)
 * Removed support for ClientLogin
 * Added OAuth2 support
