@@ -180,7 +180,7 @@ class GooBook():
             if group in contact.groups:
                 yield contact
 
-    def add_mail_contact(self, name, mailaddr, phone):
+    def add_mail_contact(self, name, mailaddr, phone = None):
         contact = {
             'names': [{'displayName': name}],
             'emailAddresses': [{'value': mailaddr}],
