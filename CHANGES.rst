@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+3.4 2019-09-10
+--------------
+* Issue 82: Cannot add contacts anymore
+* Bug in add caused email to be used instead of name even when there was a name.
+
 3.3 2018-12-14
 --------------
 * Issue 73 (reopened): Accept org name as display_name
