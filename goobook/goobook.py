@@ -212,7 +212,7 @@ class GooBook():
         else:
             # This decodes headers like "=?iso-8859-1?q?p=F6stal?="
             values = email.header.decode_header(name)
-            if values:
+            if not values:
                 # Can't this be possible?
                 name = mailaddr
             else:
