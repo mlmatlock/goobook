@@ -182,7 +182,7 @@ class GooBook():
 
     def add_mail_contact(self, name, mailaddr):
         contact = {
-            'names': [{'displayName': name}],
+            'names': [{'givenName': name}],
             'emailAddresses': [{'value': mailaddr}],
         }
 
