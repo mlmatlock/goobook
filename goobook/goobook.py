@@ -31,7 +31,7 @@ import sys
 import time
 
 import httplib2
-from apiclient.discovery import build
+from googleapiclient.discovery import build
 
 from goobook.storage import Storage, storageify, unstorageify
 
