@@ -78,11 +78,11 @@ Configuration
 
 First you need to authenticate yourself:
 
-Go to https://developers.google.com/people/quickstart/python
-and click "Enable the People API"
-select a name (ex. GooBook)
-select desktop application
-save the client_id and client_secret to be used below::
+- Go to https://developers.google.com/people/quickstart/python
+- and click "Enable the People API"
+- select a name (ex. GooBook)
+- select desktop app and create
+- save the client_id and client_secret to be used below::
 
     $ goobook authenticate -- CLIENT_ID CLIENT_SECRET
 
