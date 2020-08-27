@@ -8,7 +8,6 @@ import argparse
 import datetime
 import locale
 import logging
-import os
 import json
 import sys
 
@@ -16,7 +15,6 @@ import oauth2client.client
 import oauth2client.file
 import oauth2client.tools
 import pkg_resources
-from pkg_resources import resource_filename
 
 import goobook.config
 from goobook.goobook import GooBook, Cache, GoogleContacts, parse_groups, parse_contacts
@@ -26,6 +24,27 @@ log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 CONFIG_FILE = '~/.goobookrc'
 SCOPES = 'https://www.google.com/m8/feeds'  # read/write access to Contacts and Contact Groups
+
+AUTHENTICATE_HELP_STRING = '''Google OAuth authentication.
+
+Before running goobook authenticate you need a client_id and a client_secret, get it like this:
+
+Go to https://developers.google.com/people/quickstart/python
+and click "Enable the People API"
+select a name (ex. GooBook)
+select desktop application
+save the client_id and client_secret to be used below::
+
+    $ goobook authenticate -- CLIENT_ID CLIENT_SECRET
+
+and follow the instructions.
+
+if it doesn't open a webbrowser use
+
+goobook authenticate --noauth_local_webserver -- CLIENT_ID CLIENT_SECRET
+
+If you get the page "This app isn't verified" select Advanced and the "Go to GooBook (unsafe)" at the bottom.
+'''
 
 
 def main():
@@ -86,9 +105,13 @@ def main():
     parser_reload.set_defaults(func=do_reload)
 
     parser_auth = subparsers.add_parser('authenticate',
-                                        description='Google OAuth authentication.',
+                                        description=AUTHENTICATE_HELP_STRING,
                                         formatter_class=argparse.RawDescriptionHelpFormatter,
                                         parents=[oauth2client.tools.argparser])
+    parser_auth.add_argument('client_id', metavar='CLIENT_ID',
+                             help='Client ID')
+    parser_auth.add_argument('client_secret', metavar='CLIENT_SECRET',
+                             help='Client secret')
     parser_auth.set_defaults(func=do_authenticate)
 
     args = parser.parse_args()
@@ -170,10 +193,7 @@ def do_authenticate(config, args):
     creds = config.creds
 
     if not creds or creds.invalid:
-        client_secret_filename = config.client_secret_filename
-        if not os.path.exists(client_secret_filename):
-            client_secret_filename = resource_filename(__name__, 'client_secret.json')
-        flow = oauth2client.client.flow_from_clientsecrets(client_secret_filename, SCOPES)
+        flow = oauth2client.client.OAuth2WebServerFlow(args.client_id, args.client_secret, SCOPES)
         creds = oauth2client.tools.run_flow(flow, store, args)
     else:
         print('You are already authenticated.')
