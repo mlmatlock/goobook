@@ -76,11 +76,33 @@ Download the source tarball, uncompress it, then run the install command::
 Configuration
 =============
 
-For most users it will be enough to to run::
+First you need to authenticate yourself:
 
-    $ goobook authenticate
+Go to https://developers.google.com/people/quickstart/python
+and click "Enable the People API"
+select a name (ex. GooBook)
+select desktop application
+save the client_id and client_secret to be used below::
+
+    $ goobook authenticate -- CLIENT_ID CLIENT_SECRET
 
 and follow the instructions.
+
+If the procedure above to get client_id and secret stops working this is an alternative way to do it:
+
+- Go to the Google developer console  https://console.developers.google.com/
+- Create a new project (drop down at the top of the screen) (you are free to use an existing one if you so prefer)
+- Select the newly created project
+- Go to OAuth consent screen from sidebar
+- Select the interal user type if you can but most will only be able to select external.
+- On next screen give it a name (ex. GooBook)
+- select Add scope, click manually paste and write "https://www.googleapis.com/auth/contacts" inte the lower text box.
+- and hit hit add and then save
+- Go to Credentials from sidebar
+- Click Create Credentials from top, then OAuth Client ID in the dropdown
+- Choose Desktop app, enter any name you want, and hit create
+- save the client_id and client_secret to be used with goobook authenticate
+
 
 To get access too more settings you can create a configuration file::
 
@@ -96,10 +118,6 @@ It will look like this::
     # This file is written by the oauth library, and should be kept secure,
     # it's like a password to your google contacts.
     ;oauth_db_filename: ~/.goobook_auth.json
-
-    # The client secret file is not really secret,
-    # usually the bundled default secret is used.
-    ;client_secret_filename: ~/.goobook_client_secret.json
 
     ;cache_filename: ~/.goobook_cache
     ;cache_expiry_hours: 24
