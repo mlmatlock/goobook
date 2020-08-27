@@ -12,6 +12,8 @@ The purpose of GooBook is to make it possible to use your Google Contacts from
 the command-line and from MUAs such as Mutt.
 It can be used from Mutt the same way as abook.
 
+.. NOTE:: GooBook is looking for a new maintainer see https://gitlab.com/goobook/goobook/-/issues/90
+
 Installation Instructions
 =========================
 
