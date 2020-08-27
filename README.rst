@@ -82,11 +82,14 @@ First you need to authenticate yourself:
 - and click "Enable the People API"
 - select a name (ex. GooBook)
 - select desktop app and create
-- save the client_id and client_secret to be used below::
+- save the client_id and client_secret to be used below
+
+run::
 
     $ goobook authenticate -- CLIENT_ID CLIENT_SECRET
 
-and follow the instructions.
+and follow the instructions, this part is web based.
+
 
 If the procedure above to get client_id and secret stops working this is an alternative way to do it:
 
