@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+3.5 in progress
+--------------
+* Issue 87: Adjustments to how authenticate is used and documented, removed embedded client_id and secret
+  Added documentation for getting a client_id and secret.
+  Deprecated "client_secret_filename" in config.
+
 3.4 2019-09-10
 --------------
 * Issue 82: Cannot add contacts anymore

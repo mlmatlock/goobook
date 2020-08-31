@@ -25,10 +25,6 @@ TEMPLATE = '''\
 # it's like a password to your google contacts.
 ;oauth_db_filename: ~/.goobook_auth.json
 
-# The client secret file is not really secret,
-# usually the bundled default secret is used.
-;client_secret_filename: ~/.goobook_client_secret.json
-
 ;cache_filename: ~/.goobook_cache
 ;cache_expiry_hours: 24
 ;filter_groupless_contacts: yes
@@ -50,7 +46,6 @@ def read_config(config_file):
     config = Storage({  # Default values
         'cache_filename': '~/.goobook_cache',
         'oauth_db_filename': '~/.goobook_auth.json',
-        'client_secret_filename': '~/.goobook_client_secret.json',
         'cache_expiry_hours': '24',
         'filter_groupless_contacts': True,
         'default_group': ''})
@@ -64,7 +59,8 @@ def read_config(config_file):
 
     # Ensure paths are fully expanded
     config.cache_filename = realpath(expanduser(config.cache_filename))
-    config.client_secret_filename = realpath(expanduser(config.client_secret_filename))
+    if "client_secret_filename" in config:
+        print("WARNING: setting client_secret_filename in {} is deprecated".format(config_file), file=sys.stderr)
     config.oauth_db_filename = realpath(expanduser(config.oauth_db_filename))
 
     config.store = oauth2client.file.Storage(config.oauth_db_filename)
