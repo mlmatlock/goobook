@@ -138,7 +138,7 @@ def main():
 
 def do_add(config, args):
     goobk = GooBook(config)
-    if args.name and args.email and args.phone:
+    if args.name and args.email:
         goobk.add_mail_contact(args.name, args.email, args.phone)
     else:
         goobk.add_email_from(sys.stdin)
