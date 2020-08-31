@@ -53,8 +53,8 @@ COMMAND
 authenticate
   Allow goobook to access your Google contacts using OAuth2.
 
-add
-  Read an email address from stdin and add the From: address to your Google contacts.
+add [NAME] [EMAIL] [PHONE]
+  Add a new Google contact. If NAME and EMAIL is not specified, read an email address from stdin and add the From: address to your Google contacts.
 
 config-template
   Create a config template of **~/.goobookrc**.

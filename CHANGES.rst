@@ -6,6 +6,7 @@ CHANGES
 * Issue 87: Adjustments to how authenticate is used and documented, removed embedded client_id and secret
   Added documentation for getting a client_id and secret.
   Deprecated "client_secret_filename" in config.
+* Issue 82: Feature request: Option to add phone number when creating new contact
 
 3.4 2019-09-10
 --------------
