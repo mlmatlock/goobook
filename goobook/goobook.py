@@ -43,7 +43,7 @@ TypedValue = collections.namedtuple('TypedValue', ['value', 'type'])
 
 
 class GooBook():
-    """Application logic
+    """Application logic.
 
     This class can't be used as a library as it looks now, it uses sys.stdin
     print and sys.exit().
@@ -55,7 +55,7 @@ class GooBook():
         self.cache.load()
 
     def query(self, query, simple=False):
-        """Do the query, and print it out in
+        """Do the query, and print it out in specified format.
 
         simple=False is the mutt format
         simple format is:
@@ -180,7 +180,7 @@ class GooBook():
             if group in contact.groups:
                 yield contact
 
-    def add_mail_contact(self, name, mailaddr, phone = None):
+    def add_mail_contact(self, name, mailaddr, phone=None):
         contact = {
             'names': [{'givenName': name}],
             'emailAddresses': [{'value': mailaddr}],
@@ -198,6 +198,7 @@ class GooBook():
         This assumes a single mail file is supplied through.
 
         Args:
+        ----
           lines: A generator of lines, usually a open file.
 
         """
@@ -233,9 +234,10 @@ class Cache():
         self.groups = None  # list of Storage
 
     def load(self, force_update=False):
-        """Load the cached addressbook feed, or fetch it (again) if it is old or missing or invalid or anything
+        """Load the cached addressbook feed, or fetch it (again) if it is old or missing or invalid or anything.
 
         Args:
+        ----
           force_update: force update of cache
 
         """
@@ -271,7 +273,7 @@ class Cache():
         self.save()
 
     def save(self):
-        """Pickle the addressbook and a timestamp"""
+        """Pickle the addressbook and a timestamp."""
         if self.contacts:  # never write a empty addressbook
             cache = {'contacts': unstorageify(self.contacts),
                      'groups': unstorageify(self.groups),
@@ -388,7 +390,8 @@ class GoogleContacts():
             x__xgafv=None,
             pageToken=None,
             sortOrder=None,
-            personFields='names,nicknames,emailAddresses,memberships,phoneNumbers,birthdays,imClients,organizations,addresses',
+            personFields=('names,nicknames,emailAddresses,memberships,'
+                          'phoneNumbers,birthdays,imClients,organizations,addresses'),
             requestSyncToken=None,
             syncToken=None,
             requestMask_includeField=None)

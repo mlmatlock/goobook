@@ -3,6 +3,7 @@
 # author: Christer Sjöholm -- hcs AT furuvik DOT net
 
 import os
+import sys
 from os.path import realpath, expanduser
 import configparser
 import logging
@@ -38,7 +39,7 @@ TEMPLATE = '''\
 
 
 def read_config(config_file):
-    """Reads the ~/.goobookrc and any authentication data
+    """Reads the ~/.goobookrc and any authentication data.
 
     returns the configuration as a dictionary.
 
