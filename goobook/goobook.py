@@ -180,16 +180,17 @@ class GooBook():
             if group in contact.groups:
                 yield contact
 
-    def add_mail_contact(self, name, mailaddr):
+    def add_mail_contact(self, name, mailaddr, phone = None):
         contact = {
             'names': [{'givenName': name}],
             'emailAddresses': [{'value': mailaddr}],
+            'phoneNumbers': [{'value': phone}],
         }
 
         gcont = GoogleContacts(self.__config)
-        log.debug('Going to create contact name: %s email: %s', name, mailaddr)
+        log.debug('Going to create contact name: %s email: %s phone: %s', name, mailaddr, phone)
         gcont.create_contact(contact)
-        log.info('Created contact name: %s email: %s', name, mailaddr)
+        log.info('Created contact name: %s email: %s %s', name, mailaddr, phone)
 
     def add_email_from(self, lines):
         """Add an address from From: field of a mail.

@@ -71,6 +71,8 @@ def main():
                             help='Name to use.')
     parser_add.add_argument('email', nargs='?', metavar='EMAIL',
                             help='E-mail to use.')
+    parser_add.add_argument('phone', nargs='?', metavar='PHONE',
+                            help='Phone number to use.')
     parser_add.set_defaults(func=do_add)
 
     parser_config_template = subparsers.add_parser('config-template',
@@ -137,7 +139,7 @@ def main():
 def do_add(config, args):
     goobk = GooBook(config)
     if args.name and args.email:
-        goobk.add_mail_contact(args.name, args.email)
+        goobk.add_mail_contact(args.name, args.email, args.phone)
     else:
         goobk.add_email_from(sys.stdin)
     goobk.cache.load(force_update=True)
