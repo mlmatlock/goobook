@@ -28,8 +28,9 @@ setuptools.setup(
         Programming Language :: Python :: 3
         Programming Language :: Python :: 3.6
         Programming Language :: Python :: 3.7
+        Programming Language :: Python :: 3.8
         Intended Audience :: End Users/Desktop
-        License :: OSI Approved :: GNU General Public License (GPL)
+        License :: OSI Approved :: GNU General Public License v3 (GPLv3)
         Topic :: Communications :: Email :: Address Book
     """.splitlines() if f.strip()],
     keywords='abook mutt e-mail gmail google address-book',
