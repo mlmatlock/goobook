@@ -22,7 +22,6 @@ from goobook.storage import unstorageify
 
 log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
-CONFIG_FILE = '~/.goobookrc'
 SCOPES = 'https://www.google.com/m8/feeds'  # read/write access to Contacts and Contact Groups
 
 AUTHENTICATE_HELP_STRING = '''Google OAuth authentication.
@@ -60,7 +59,7 @@ def main():
                         help="Print version and exit")
     parser.add_argument('-d', '--debug', dest="log_level", action='store_const',
                         const=logging.DEBUG, help='Output debug info (stderr).')
-    parser.set_defaults(config=CONFIG_FILE, log_level=logging.ERROR)
+    parser.set_defaults(log_level=logging.ERROR)
 
     subparsers = parser.add_subparsers()
 

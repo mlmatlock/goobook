@@ -111,20 +111,23 @@ If the procedure above to get client_id and secret stops working this is an alte
 
 To get access too more settings you can create a configuration file::
 
-    goobook config-template > ~/.goobookrc
+    goobook config-template > ~/.config/goobookrc
 
 It will look like this::
 
+    # Use this template to create your ~/.goobookrc
 
     # "#" or ";" at the start of a line makes it a comment.
+
     [DEFAULT]
-    # The following are optional, defaults are shown
+    # The following are optional, defaults are shown when not other specified.
 
     # This file is written by the oauth library, and should be kept secure,
     # it's like a password to your google contacts.
+    # default is to place it in the XDG_DATA_HOME
     ;oauth_db_filename: ~/.goobook_auth.json
 
-    ;cache_filename: ~/.goobook_cache
+    ;cache_filename: ~/.goobook_cache   # default is in the XDG_CACHE_HOME
     ;cache_expiry_hours: 24
     ;filter_groupless_contacts: yes
 
@@ -134,6 +137,19 @@ It will look like this::
     # be sorted easier than all of "My Contacts".
     ;default_group:
 
+
+Files
+-----
+
+GooBook is using three files, the optional config file that can be placed in the
+XDG_CONFIG_HOME (~/.config/goobookrc) or in the home directory (~/.goobookrc).
+
+The authentication file that is created by running goobook authenticate
+in XDG_DATA_HOME (~/.local/share/goobook_auth.json) but can also be placed
+in the home directory (~/.goobook_auth.json).
+
+The contacts cache file that is created in XDG_CACHE_HOME (~/.cache/goobook_cache)
+but can also be placed in the home directory (~/.goobook_cache).
 
 Proxy settings
 --------------

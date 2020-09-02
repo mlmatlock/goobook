@@ -8,7 +8,7 @@ access your Google contacts from mutt or the command line
 
 
 :Author: This manual page has been written by Dariusz Dwornikowski and Christer Sjöholm
-:Date:   2018-09-22
+:Date:   2020-09-02
 :Manual section: 1
 :Manual group: User Manuals
 
@@ -57,7 +57,7 @@ add [NAME] [EMAIL] [PHONE]
   Add a new Google contact. If NAME and EMAIL is not specified, read an email address from stdin and add the From: address to your Google contacts.
 
 config-template
-  Create a config template of **~/.goobookrc**.
+  Display a config template of that can be written to **~/.config/goobookrc**.
 
 dump_contacts
   dump all your contacts to XML (stdout).
@@ -82,17 +82,17 @@ CONFIGURATION
 -------------
 | For most users it will be enough to run:
 |
-|    **goobook** authenticate
+|    **goobook** authenticate --help
+|
+| and follow the instructions
 
 | To have access to more advanced options, you can generate a config file by doing:
 |
-|    **goobook** config-template > ~/.goobookrc
+|    **goobook** config-template > ~/.config/goobookrc
 
 An example config can look like this::
 
     [DEFAULT]
-    oauth_db_filename: ~/.goobook_auth.json
-    cache_filename: ~/.goobook_cache
     cache_expiry_hours: 24
 
 
