@@ -124,7 +124,6 @@ def read_config(config_file=None):
 
     config.store = oauth2client.file.Storage(config.oauth_db_filename)
 
-
     config.creds = config.store.get()
 
     log.debug(config)
