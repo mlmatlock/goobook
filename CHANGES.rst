@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-3.5 in progress
+3.5rc1
 --------------
 * Issue 87: Adjustments to how authenticate is used and documented, removed embedded client_id and secret
   Added documentation for getting a client_id and secret.
@@ -14,6 +14,7 @@ CHANGES
     $XDG_CONFIG_HOME/goobookrc
     $XDG_CACHE_HOME/goobook_cache
     $XDG_DATA_HOME/goobook_auth.json
+* Issue 75: Added unauthenticate command.
 
 3.4 2019-09-10
 --------------
