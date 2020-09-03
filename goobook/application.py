@@ -8,6 +8,7 @@ import argparse
 import datetime
 import locale
 import logging
+import pathlib
 import json
 import sys
 
@@ -115,6 +116,10 @@ def main():
                              help='Client secret')
     parser_auth.set_defaults(func=do_authenticate)
 
+    parser_unauth = subparsers.add_parser('unauthenticate',
+                                          description="Removed authentication data (logout).")
+    parser_unauth.set_defaults(func=do_unauthenticate)
+
     args = parser.parse_args()
 
     logging.basicConfig(level=args.log_level)
@@ -198,6 +203,13 @@ def do_authenticate(config, args):
         creds = oauth2client.tools.run_flow(flow, store, args)
     else:
         print('You are already authenticated.')
+
+
+def do_unauthenticate(config, _args):
+    oauth_db = pathlib.Path(config.oauth_db_filename)
+    if oauth_db.exists():
+        oauth_db.unlink()
+        print("deleted", oauth_db)
 
 
 if __name__ == '__main__':
