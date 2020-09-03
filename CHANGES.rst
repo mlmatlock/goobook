@@ -9,11 +9,14 @@ CHANGES
 * Issue 82: Feature request: Option to add phone number when creating new contact
 * Updated dependencies.
 * Issue 89: Support XDG Spec, files located in the old locations is still used if
-  they exists but XDG location are preferred.
+  they exists but XDG locations are preferred.
+
   ex.
-    $XDG_CONFIG_HOME/goobookrc
-    $XDG_CACHE_HOME/goobook_cache
-    $XDG_DATA_HOME/goobook_auth.json
+
+  - $XDG_CONFIG_HOME/goobookrc
+  - $XDG_CACHE_HOME/goobook_cache
+  - $XDG_DATA_HOME/goobook_auth.json
+
 * Issue 75: Added unauthenticate command.
 
 3.4 2019-09-10
