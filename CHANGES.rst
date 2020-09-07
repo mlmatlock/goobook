@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-3.5rc1
+3.5 2020-09-07
 --------------
 * Issue 87: Adjustments to how authenticate is used and documented, removed embedded client_id and secret
   Added documentation for getting a client_id and secret.
