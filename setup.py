@@ -36,9 +36,10 @@ setuptools.setup(
     keywords='abook mutt e-mail gmail google address-book',
     license='GPLv3',
     install_requires=[
-        'google-api-python-client>=1.6.4',
-        'simplejson>=2.1.0',
+        'google-api-python-client>=1.7.12',
+        'simplejson>=3.16.0',
         'oauth2client>=1.5.0,<5.0.0dev',
+        'xdg>=4.0.1'
     ],
     extras_require={
     },
