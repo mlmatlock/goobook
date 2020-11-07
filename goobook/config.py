@@ -108,6 +108,7 @@ def read_config(config_file=None):
     # Search for auth file to use
     if config.oauth_db_filename:  # If explicitly specified in config file
         config.oauth_db_filename = realpath(expanduser(config.oauth_db_filename))
+        auth_file = pathlib.Path(config.oauth_db_filename)
     else:  # search for goobook_auth.json in XDG dirs and homedir
         auth_files = [dir_ / "goobook_auth.json" for dir_ in [xdg.XDG_DATA_HOME] +
                       xdg.XDG_DATA_DIRS] + [LEGACY_AUTH_FILE]
