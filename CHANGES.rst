@@ -1,8 +1,8 @@
 CHANGES
 =======
 
-next
-----
+3.5.1 2020-11-30
+----------------
 
 * Issue 91: oauth_db_filename in config file has been broken since 3.5
 * Issue 92: AttributeError: module 'xdg' has no attribute 'XDG_CONFIG_HOME'

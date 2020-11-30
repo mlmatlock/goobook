@@ -12,7 +12,7 @@ NEWS = open(os.path.join(HERE, 'CHANGES.rst')).read()
 
 setuptools.setup(
     name='goobook',
-    version='3.5',
+    version='3.5.1',
     description='Search your google contacts from the command-line or mutt.',
     long_description=README + '\n\n' + NEWS,
     long_description_content_type="text/x-rst",
