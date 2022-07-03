@@ -36,7 +36,6 @@ pytest = "^7.1.2"
 docutils = "^0.18.1"
 pyroma = "^4.0"
 vulture = "^2.4"
-twine = "^4.0.1"
 
 [tool.poetry.scripts]
 goobook = "goobook.application:main"
