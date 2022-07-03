@@ -1,8 +1,8 @@
 CHANGES
 =======
 
-dev
----
+3.6.0 2022-07-03
+----------------
 
 * Replace pipenv with poetry
 * Cleanup source

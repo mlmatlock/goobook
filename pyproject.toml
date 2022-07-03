@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "goobook"
-version = "3.5.1"
+version = "3.6.0"
 description = "Search your google contacts from the command-line or mutt."
 authors = ["Christer Sjöholm <goobook@furuvik.net>"]
 license = "GPL-3.0-only"
