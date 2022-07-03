@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+dev
+---
+
+* Replace pipenv with poetry
+* Cleanup source
+* Update dependencies
+
 3.5.1 2020-11-30
 ----------------
 
