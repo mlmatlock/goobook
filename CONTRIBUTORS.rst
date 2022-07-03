@@ -15,6 +15,7 @@ Contributors
 * jlenton
 * Jonathan Ballet
 * Justin J. Snelgrove
+* Kai Weber
 * Zhihao Yuan
 
 If you think your name is missing, please add it (alpha order by first name)
