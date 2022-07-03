@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Run static code analyis
-# You need to have done: pipenv install --dev
+# You need to have done: poetry install --dev
 
 # prospector is configured in .prospector.yaml
 
-exec pipenv run prospector "$@"
+exec poetry run prospector "$@"
