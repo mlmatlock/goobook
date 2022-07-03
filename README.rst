@@ -46,24 +46,24 @@ Install like this::
 This will install goobook as ~/.local/bin/goobook (In a UNIX environment).
 
 
-Pipenv
+Poetry
 ------
 
 This is the recommended way if you want to run from a git checkout.
-Install pipenv if you don't have it, https://pipenv.readthedocs.io.
+Install poetry if you don't have it, https://python-poetry.org.
 
 clone the git repos, cd into in, and run::
 
-    $ pipenv install
+    $ poetry install
 
-Goobook is now installed in a virtualenv created by pipenv.
-you can test pipenv by running::
+Goobook is now installed in a virtualenv created by poetry.
+You can test goobook by running::
 
-    $ pipenv run goobook
+    $ poetry run goobook
 
 To locate the virtualenv where goobook is installed::
 
-    $ pipenv --venv
+    $ poetry env list --full-path
 
 Source installation from tarball
 --------------------------------
