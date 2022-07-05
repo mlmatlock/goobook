@@ -3,10 +3,10 @@ CHANGES
 
 3.6.0 2022-07-03
 ----------------
-
 * Replace pipenv with poetry
-* Cleanup source
+* Reorganize source
 * Update dependencies
+* Add setuptools as explicit dependency
 
 3.5.1 2020-11-30
 ----------------
