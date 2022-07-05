@@ -27,8 +27,8 @@ python = "^3.7"
 google-api-python-client = "^1.7.12"
 simplejson = "^3.16.0"
 oauth2client = ">=1.5.0,<5.0.0dev"
-xdg = "^4.0.1"
 setuptools = "^62.6.0"
+pyxdg = "^0.28"
 
 [tool.poetry.dev-dependencies]
 prospector = "^1.7.7"

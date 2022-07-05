@@ -7,6 +7,7 @@ CHANGES
 * Reorganize source
 * Update dependencies
 * Add setuptools as explicit dependency
+* Replace xdg with pyxdg using patch from Debian package (Thanks to Ilias Tsitsimpis)
 
 3.5.1 2020-11-30
 ----------------

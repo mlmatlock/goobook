@@ -10,7 +10,8 @@ import configparser
 import logging
 
 import oauth2client.client
-import xdg
+from xdg.BaseDirectory import (xdg_cache_home, xdg_config_home,
+                               xdg_config_dirs, xdg_data_dirs, xdg_data_home)
 
 from goobook.storage import Storage
 
@@ -43,6 +44,12 @@ TEMPLATE = '''\
 ;default_group:
 '''
 
+def topath(x):
+    if isinstance(x, list):
+        return [pathlib.Path(_x) for _x in x]
+    else:
+        return pathlib.Path(x)
+
 
 def read_config(config_file=None):
     """Reads the ~/.goobookrc and any authentication data.
@@ -61,8 +68,8 @@ def read_config(config_file=None):
     if config_file:  # config file explicitly given on the commandline
         config_file = os.path.expanduser(config_file)
     else:  # search for goobookrc in XDG dirs and homedir
-        config_files = [dir_ / "goobookrc" for dir_ in [xdg.XDG_CONFIG_HOME] +
-                        xdg.XDG_CONFIG_DIRS] + [LEGACY_CONFIG_FILE]
+        config_files = [dir_ / "goobookrc" for dir_ in [topath(xdg_config_home)] +
+                        topath(xdg_config_dirs)] + [LEGACY_CONFIG_FILE]
         log.debug("config file search path: %s", config_files)
         for config_file_ in config_files:
             if config_file_.exists():
@@ -93,7 +100,7 @@ def read_config(config_file=None):
     if config.cache_filename:  # If explicitly specified in config file
         config.cache_filename = realpath(expanduser(config.cache_filename))
     else:  # search for goobook_cache in XDG dirs and homedir
-        cache_files = [xdg.XDG_CACHE_HOME / "goobook_cache", LEGACY_CACHE_FILE]
+        cache_files = [topath(xdg_cache_home) / "goobook_cache", LEGACY_CACHE_FILE]
         log.debug("cache file search path: %s", cache_files)
         for cache_file in cache_files:
             cache_file = cache_file.resolve()
@@ -101,7 +108,7 @@ def read_config(config_file=None):
                 log.debug("found cache file: %s", cache_file)
                 break
         else:  # If there is none, create in XDG_CACHE_HOME
-            cache_file = xdg.XDG_CACHE_HOME / "goobook_cache"
+            cache_file = topath(xdg_cache_home) / "goobook_cache"
             log.debug("no cache file found, will use %s", cache_file)
         config.cache_filename = str(cache_file)
 
@@ -110,8 +117,8 @@ def read_config(config_file=None):
         config.oauth_db_filename = realpath(expanduser(config.oauth_db_filename))
         auth_file = pathlib.Path(config.oauth_db_filename)
     else:  # search for goobook_auth.json in XDG dirs and homedir
-        auth_files = [dir_ / "goobook_auth.json" for dir_ in [xdg.XDG_DATA_HOME] +
-                      xdg.XDG_DATA_DIRS] + [LEGACY_AUTH_FILE]
+        auth_files = [dir_ / "goobook_auth.json" for dir_ in [topath(xdg_data_home)] +
+                      topath(xdg_data_dirs)] + [LEGACY_AUTH_FILE]
         log.debug("auth file search path: %s", auth_files)
         for auth_file in auth_files:
             auth_file = auth_file.resolve()
@@ -119,7 +126,7 @@ def read_config(config_file=None):
                 log.debug("found auth file: %s", auth_file)
                 break
         else:  # If there is none, create in XDG_DATA_HOME
-            auth_file = xdg.XDG_DATA_HOME / "goobook_auth.json"
+            auth_file = topath(xdg_data_home) / "goobook_auth.json"
             log.debug("no auth file found, will use %s", auth_file)
         config.oauth_db_filename = str(auth_file)
 
