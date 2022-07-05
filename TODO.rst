@@ -1,4 +1,4 @@
-Things than I plan to do
+Things that I plan to do
 ========================
 
 Don't sit in in front of your computer waiting for these,
