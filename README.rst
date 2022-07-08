@@ -28,7 +28,7 @@ Which version to use
 --------------------
 
 If you only have Python 2.7 you need to use GooBook 1.x.
-If you have Python 3.6+ you need to use GooBook 3.x.
+If you have Python 3.7+ you need to use GooBook 3.x.
 
 There will be no further feature releases in the 1.x series.
 
@@ -141,20 +141,22 @@ It will look like this::
 Files
 -----
 
-GooBook is using three files, the optional config file that can be placed in the
-XDG_CONFIG_HOME (~/.config/goobookrc) or in the home directory (~/.goobookrc).
+GooBook is using three files, the optional config file that can be placed in
+the ``XDG_CONFIG_HOME`` (``~/.config/goobookrc``) or in the home directory
+(``~/.goobookrc``).
 
-The authentication file that is created by running goobook authenticate
-in XDG_DATA_HOME (~/.local/share/goobook_auth.json) but can also be placed
-in the home directory (~/.goobook_auth.json).
+The authentication file that is created by running goobook authenticate in
+``XDG_DATA_HOME`` (``~/.local/share/goobook_auth.json``) but can also be placed
+in the home directory (``~/.goobook_auth.json``).
 
-The contacts cache file that is created in XDG_CACHE_HOME (~/.cache/goobook_cache)
-but can also be placed in the home directory (~/.goobook_cache).
+The contacts cache file that is created in ``XDG_CACHE_HOME``
+(``~/.cache/goobook_cache``) but can also be placed in the home directory
+(``~/.goobook_cache``).
 
 Proxy settings
 --------------
 
-If you use a proxy you need to set the https_proxy environment variable.
+If you use a proxy you need to set the ``https_proxy`` environment variable.
 
 Mutt
 ----
@@ -167,7 +169,7 @@ Set in your .muttrc file::
 
 to query address book. (Normally bound to "Q" key.)
 
-If you want to be able to use <tab> to complete email addresses instead of Ctrl-t add this:
+If you want to be able to use <tab> to complete email addresses instead of Ctrl-t add this::
 
     bind editor <Tab> complete-query
 
