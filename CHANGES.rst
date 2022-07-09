@@ -1,8 +1,9 @@
 CHANGES
 =======
 
-3.6.0 2022-07-03
-----------------
+3.5.2
+-----
+
 * Replace pipenv with poetry
 * Reorganize source
 * Update dependencies
