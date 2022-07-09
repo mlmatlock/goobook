@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "goobook"
+version = "3.5.2"
+description = "Search your google contacts from the command-line or mutt."
+authors = ["Christer Sjöholm <goobook@furuvik.net>"]
+license = "GPL-3.0-only"
+readme = "README.rst"
+repository = "http://gitlab.com/goobook/goobook"
+keywords=[
+    "abook",
+    "mutt",
+    "e-mail",
+    "gmail",
+    "google",
+    "address-book"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Communications :: Email :: Address Book"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+google-api-python-client = "^1.7.12"
+simplejson = "^3.16.0"
+oauth2client = ">=1.5.0,<5.0.0dev"
+setuptools = "^62.6.0"
+pyxdg = "^0.28"
+
+[tool.poetry.dev-dependencies]
+prospector = "^1.7.7"
+pytest = "^7.1.2"
+docutils = "^0.18.1"
+pyroma = "^4.0"
+vulture = "^2.4"
+
+[tool.poetry.scripts]
+goobook = "goobook.application:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

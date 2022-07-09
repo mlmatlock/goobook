@@ -19,10 +19,10 @@ pylint:
   disable:
     - missing-docstring
 
-pep8:
+pycodestyle:
   full: true
 
-pep257:
+pydocstyle:
   disable:
     - D213
     - D203

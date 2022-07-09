@@ -1,13 +1,22 @@
 Release HOWTO
 =============
 
-To make a release, edit "version" in setup.py and run:
+To make a release, edit "version" in pyproject.toml and run::
 
-  pipenv run python setup.py egg_info -Db "" sdist bdist_wheel
+  poetry build
 
-To upload the generated source and wheel distribution to PyPI, run:
+To upload the generated source and wheel distribution to PyPI, run::
 
-  pipenv run twine upload dist/*  ## Run on only the files you actually want to upload
+  poetry publish
 
-Note that if you ignore the ``egg_info -Db ""`` part, Distribute will generate
-a development release tarball with ``.dev``.
+Linting
+=======
+
+Use the provided scripts to check, verify and validate the package and
+documentation.
+
+* The ``scripts/check.sh`` is used for general checks of the package code.
+
+* Use ``scripts/check-man.sh`` to verify that the manual page can be created.
+
+* Use ``scripts/check-rst.sh`` to verify that the documentation can be created.
