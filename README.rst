@@ -84,16 +84,16 @@ First you need to authenticate yourself:
 - and click "Enable the People API"
 - select a name (ex. GooBook)
 - select desktop app and create
-- save the client_id and client_secret to be used below
+- click "Download JSON" and save the file to be used below
 
 run::
 
-    $ goobook authenticate -- CLIENT_ID CLIENT_SECRET
+    $ goobook authenticate -- client_secrets.json
 
 and follow the instructions, this part is web based.
 
 
-If the procedure above to get client_id and secret stops working this is an alternative way to do it:
+If the procedure above to get client secrets stops working this is an alternative way to do it:
 
 - Go to the Google developer console  https://console.developers.google.com/
 - Create a new project (drop down at the top of the screen) (you are free to use an existing one if you so prefer)
@@ -106,7 +106,7 @@ If the procedure above to get client_id and secret stops working this is an alte
 - Go to Credentials from sidebar
 - Click Create Credentials from top, then OAuth Client ID in the dropdown
 - Choose Desktop app, enter any name you want, and hit create
-- save the client_id and client_secret to be used with goobook authenticate
+- click "Download JSON" and save the file to be used below
 
 
 To get access too more settings you can create a configuration file::
