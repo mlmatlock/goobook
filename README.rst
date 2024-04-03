@@ -2,6 +2,8 @@
 GooBook -- Access your Google contacts from the command line.
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+.. CAUTION:: This project is no longer maintained. 
+
 .. contents:: **Table of Contents**
    :depth: 1
 
