@@ -31,6 +31,7 @@ import sys
 import time
 
 import httplib2
+import google_auth_httplib2
 from googleapiclient.discovery import build
 
 from goobook.storage import Storage, storageify, unstorageify
@@ -377,9 +378,9 @@ class GoogleContacts():
     @staticmethod
     def __get_client(credentials):
         """Login to Google and return a ContactsClient object."""
-        if not credentials or credentials.invalid:
+        if not credentials:
             sys.exit('No or invalid credentials, run "goobook authenticate"')  # TODO raise exception instead
-        http_auth = credentials.authorize(httplib2.Http())
+        http_auth = google_auth_httplib2.AuthorizedHttp(credentials)
         return http_auth
 
     def fetch_contacts(self):

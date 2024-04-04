@@ -9,7 +9,7 @@ from os.path import realpath, expanduser
 import configparser
 import logging
 
-import oauth2client.client
+from google.oauth2 import credentials
 from xdg.BaseDirectory import (xdg_cache_home, xdg_config_home,
                                xdg_config_dirs, xdg_data_dirs, xdg_data_home)
 
@@ -130,12 +130,21 @@ def read_config(config_file=None):
             log.debug("no auth file found, will use %s", auth_file)
         config.oauth_db_filename = str(auth_file)
 
-    config.store = oauth2client.file.Storage(config.oauth_db_filename)
-
-    config.creds = config.store.get() if auth_file.exists() else None
+    config.creds = credentials.Credentials.from_authorized_user_file(auth_file) if auth_file.exists() else None
 
     log.debug(config)
     return config
+
+
+def maybe_save_creds(config: Storage):
+    new_creds = config.creds
+    if not new_creds or not new_creds.token:
+        return
+    auth_file = pathlib.Path(config.oauth_db_filename)
+    old_creds = credentials.Credentials.from_authorized_user_file(auth_file) if auth_file.exists() else None
+    if not old_creds or not old_creds.valid or new_creds.token != old_creds.token:
+        log.debug("updating credentials in %s", auth_file)
+        auth_file.write_text(new_creds.to_json())
 
 
 def _get_config(config_file):
