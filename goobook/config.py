@@ -2,25 +2,29 @@
 # vim: fileencoding=UTF-8 filetype=python ff=unix et ts=4 sw=4 sts=4 tw=120
 # author: Christer Sjöholm -- hcs AT furuvik DOT net
 
+import configparser
+import logging
 import os
 import pathlib
 import sys
-from os.path import realpath, expanduser
-import configparser
-import logging
+from os.path import expanduser
+from os.path import realpath
 
 import oauth2client.client
-from xdg.BaseDirectory import (xdg_cache_home, xdg_config_home,
-                               xdg_config_dirs, xdg_data_dirs, xdg_data_home)
+from xdg.BaseDirectory import xdg_cache_home
+from xdg.BaseDirectory import xdg_config_dirs
+from xdg.BaseDirectory import xdg_config_home
+from xdg.BaseDirectory import xdg_data_dirs
+from xdg.BaseDirectory import xdg_data_home
 
 from goobook.storage import Storage
 
 log = logging.getLogger(__name__)  # pylint: disable=invalid-name
-LEGACY_CONFIG_FILE = pathlib.Path('~/.goobookrc').expanduser()
-LEGACY_AUTH_FILE = pathlib.Path('~/.goobook_auth.json').expanduser()
-LEGACY_CACHE_FILE = pathlib.Path('~/.goobook_cache').expanduser()
+LEGACY_CONFIG_FILE = pathlib.Path("~/.goobookrc").expanduser()
+LEGACY_AUTH_FILE = pathlib.Path("~/.goobook_auth.json").expanduser()
+LEGACY_CACHE_FILE = pathlib.Path("~/.goobook_cache").expanduser()
 
-TEMPLATE = '''\
+TEMPLATE = """\
 # Use this template to create your ~/.goobookrc
 
 # "#" or ";" at the start of a line makes it a comment.
@@ -42,7 +46,8 @@ TEMPLATE = '''\
 # One use for this is to add new contacts to an "Unsorted" group, which can
 # be sorted easier than all of "My Contacts".
 ;default_group:
-'''
+"""
+
 
 def topath(x):
     if isinstance(x, list):
@@ -57,19 +62,24 @@ def read_config(config_file=None):
     returns the configuration as a dictionary.
 
     """
-    config = Storage({  # Default values
-        'cache_filename': None,
-        'oauth_db_filename': None,
-        'cache_expiry_hours': '24',
-        'filter_groupless_contacts': True,
-        'default_group': ''})
+    config = Storage(
+        {  # Default values
+            "cache_filename": None,
+            "oauth_db_filename": None,
+            "cache_expiry_hours": "24",
+            "filter_groupless_contacts": True,
+            "default_group": "",
+        }
+    )
 
     # Search for config file to use
     if config_file:  # config file explicitly given on the commandline
         config_file = os.path.expanduser(config_file)
     else:  # search for goobookrc in XDG dirs and homedir
-        config_files = [dir_ / "goobookrc" for dir_ in [topath(xdg_config_home)] +
-                        topath(xdg_config_dirs)] + [LEGACY_CONFIG_FILE]
+        config_files = [
+            dir_ / "goobookrc"
+            for dir_ in [topath(xdg_config_home)] + topath(xdg_config_dirs)
+        ] + [LEGACY_CONFIG_FILE]
         log.debug("config file search path: %s", config_files)
         for config_file_ in config_files:
             if config_file_.exists():
@@ -88,13 +98,20 @@ def read_config(config_file=None):
         parser = None
 
     if parser:
-        config.get_dict().update(dict(parser.items('DEFAULT', raw=True)))
+        config.get_dict().update(dict(parser.items("DEFAULT", raw=True)))
         # Handle not string fields
-        if parser.has_option('DEFAULT', 'filter_groupless_contacts'):
-            config.filter_groupless_contacts = parser.getboolean('DEFAULT', 'filter_groupless_contacts')
+        if parser.has_option("DEFAULT", "filter_groupless_contacts"):
+            config.filter_groupless_contacts = parser.getboolean(
+                "DEFAULT", "filter_groupless_contacts"
+            )
 
     if "client_secret_filename" in config:
-        print("WARNING: setting client_secret_filename in {} is deprecated".format(config_file), file=sys.stderr)
+        print(
+            "WARNING: setting client_secret_filename in {} is deprecated".format(
+                config_file
+            ),
+            file=sys.stderr,
+        )
 
     # Search for cache file to use
     if config.cache_filename:  # If explicitly specified in config file
@@ -117,8 +134,10 @@ def read_config(config_file=None):
         config.oauth_db_filename = realpath(expanduser(config.oauth_db_filename))
         auth_file = pathlib.Path(config.oauth_db_filename)
     else:  # search for goobook_auth.json in XDG dirs and homedir
-        auth_files = [dir_ / "goobook_auth.json" for dir_ in [topath(xdg_data_home)] +
-                      topath(xdg_data_dirs)] + [LEGACY_AUTH_FILE]
+        auth_files = [
+            dir_ / "goobook_auth.json"
+            for dir_ in [topath(xdg_data_home)] + topath(xdg_data_dirs)
+        ] + [LEGACY_AUTH_FILE]
         log.debug("auth file search path: %s", auth_files)
         for auth_file in auth_files:
             auth_file = auth_file.resolve()
@@ -143,12 +162,14 @@ def _get_config(config_file):
     parser = configparser.SafeConfigParser()
     if os.path.lexists(config_file):
         try:
-            log.info('Reading config: %s', config_file)
+            log.info("Reading config: %s", config_file)
             inp = open(config_file)
             parser.read_file(inp)
             return parser
         except (IOError, configparser.ParsingError) as err:
-            raise ConfigError("Failed to read configuration %s\n%s" % (config_file, err))
+            raise ConfigError(
+                "Failed to read configuration %s\n%s" % (config_file, err)
+            )
     return None
 
 

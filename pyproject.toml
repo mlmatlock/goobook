@@ -30,15 +30,22 @@ oauth2client = ">=1.5.0,<5.0.0dev"
 setuptools = "^62.6.0"
 pyxdg = "^0.28"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 prospector = "^1.7.7"
 pytest = "^7.1.2"
 docutils = "^0.18.1"
 pyroma = "^4.0"
 vulture = "^2.4"
+black = "^22.8.0"
+isort = "^5.10.1"
 
 [tool.poetry.scripts]
 goobook = "goobook.application:main"
+
+[tool.isort]
+profile = "black"
+force_single_line = true
+known_first_party = ["goobook"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
