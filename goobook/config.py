@@ -140,7 +140,7 @@ def read_config(config_file=None):
 
 def _get_config(config_file):
     """find, read and parse configuraton."""
-    parser = configparser.SafeConfigParser()
+    parser = configparser.ConfigParser()
     if os.path.lexists(config_file):
         try:
             log.info('Reading config: %s', config_file)
